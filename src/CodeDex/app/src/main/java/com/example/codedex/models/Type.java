@@ -2,12 +2,10 @@ package com.example.codedex.models;
 
 public class Type {
 
-    private String slot;
+
     private String name;
 
-    public String getSlot() {
-        return slot;
-    }
+
 
     private String url;
 

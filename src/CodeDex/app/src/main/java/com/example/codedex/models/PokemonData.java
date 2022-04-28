@@ -7,9 +7,9 @@ public class PokemonData {
     private String name;
     private String height;
     private String weight;
-    private List<Type> types;
+    private List<TypesList> types;
 
-    public List<Type> getTypes() {
+    public List<TypesList> getTypes() {
         return types;
     }
 

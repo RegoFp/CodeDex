@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.codedex.models.Type;
+import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
@@ -85,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
                 PokemonData bulbasur = response.body();
-                Type tipo = bulbasur.getTypes().get(1);
+                List<TypesList> tipo = bulbasur.getTypes();
                 //Toast.makeText(getApplicationContext(),bulbasur.getName(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),tipo.getName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),tipo.get(0).getSlot(), Toast.LENGTH_LONG).show();
             }
 
             @Override
