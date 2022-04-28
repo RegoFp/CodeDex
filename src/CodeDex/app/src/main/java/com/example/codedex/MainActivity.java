@@ -81,14 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void Bulbasur(){
         PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<PokemonData> call = client.getPokemonById("1");
+        Call<PokemonData> call = client.getPokemonById("6");
         call.enqueue(new Callback<PokemonData>() {
             @Override
             public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
                 PokemonData bulbasur = response.body();
-                List<TypesList> tipo = bulbasur.getTypes();
+                List<TypesList> typesList = bulbasur.getTypes();
+                Type type = typesList.get(0).getType();
                 //Toast.makeText(getApplicationContext(),bulbasur.getName(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),tipo.get(0).getSlot(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),type.getName(), Toast.LENGTH_LONG).show();
             }
 
             @Override
