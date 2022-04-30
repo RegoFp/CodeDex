@@ -2,7 +2,11 @@ package com.example.codedex;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.codedex.models.Type;
@@ -24,6 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
+    private String id = "1";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +60,15 @@ public class MainActivity extends AppCompatActivity {
                         )
                         .build();
 
-        Bulbasur();
+
 
 
 
     }
 
     private void alldata(){
+
+        ;
         PokemonClient client =  retrofit.create(PokemonClient.class);
         Call<List<Pokemon>> call = client.pokemons();
         call.enqueue(new Callback<List<Pokemon>>() {
@@ -68,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Pokemon>> call, Response<List<Pokemon>> response) {
                 List<Pokemon> pokemons = response.body();
                 Toast.makeText(getApplicationContext(),pokemons.get(1).getName(), Toast.LENGTH_LONG).show();
+                String teste = pokemons.get(1).getName();
 
             }
 
@@ -79,17 +88,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void Bulbasur(){
+    private void Pokemon(String id){
+        Intent i = new Intent(this, PokemonView.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<PokemonData> call = client.getPokemonById("6");
+        Call<PokemonData> call = client.getPokemonById(id);
         call.enqueue(new Callback<PokemonData>() {
             @Override
             public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
-                PokemonData bulbasur = response.body();
-                List<TypesList> typesList = bulbasur.getTypes();
+                PokemonData pokemonData = response.body();
+
+                List<TypesList> typesList = pokemonData.getTypes();
                 Type type = typesList.get(0).getType();
+
                 //Toast.makeText(getApplicationContext(),bulbasur.getName(), Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(),type.getName(), Toast.LENGTH_LONG).show();
+
+                //TODO Pasar el objeto entero, no los datos dentro del objeto
+                i.putExtra("id",pokemonData.getId());
+                i.putExtra("name",pokemonData.getName());
+                i.putExtra("weight",pokemonData.getWeight());
+                i.putExtra("height",pokemonData.getHeight());
+                i.putExtra("type1",pokemonData.getTypes().get(0).getType().getName());
+                i.putExtra("type2",pokemonData.getTypes().get(1).getType().getName());
+
+                //No se pueden pasar listas
+                // https://stackoverflow.com/questions/6543811/intent-putextra-list
+                //i.putExtra("type", pokemonData.getTypes());
+                startActivity(i);
+
+
+
+
             }
 
             @Override
@@ -97,6 +126,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    public void onclick(View v){
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String id ="2" ;
+        id = (String) editText.getText().toString();
+
+        Pokemon(id);
+
+
 
     }
 }
