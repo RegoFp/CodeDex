@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.codedex.models.PokemonList;
 import com.example.codedex.models.Type;
 import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
 
-
+    alldata();
 
 
     }
@@ -70,19 +71,17 @@ public class MainActivity extends AppCompatActivity {
 
         ;
         PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<List<Pokemon>> call = client.pokemons();
-        call.enqueue(new Callback<List<Pokemon>>() {
+        Call<PokemonList> call = client.pokemons();
+        call.enqueue(new Callback<PokemonList>() {
             @Override
-            public void onResponse(Call<List<Pokemon>> call, Response<List<Pokemon>> response) {
-                List<Pokemon> pokemons = response.body();
-                Toast.makeText(getApplicationContext(),pokemons.get(1).getName(), Toast.LENGTH_LONG).show();
-                String teste = pokemons.get(1).getName();
-
+            public void onResponse(Call<PokemonList> call, Response<PokemonList> response) {
+            System.out.println(response.body().getResults().get(1).getName());
+            List<Pokemon> pokemon = response.body().getResults();
             }
 
             @Override
-            public void onFailure(Call<List<Pokemon>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<PokemonList> call, Throwable t) {
+
             }
         });
 
