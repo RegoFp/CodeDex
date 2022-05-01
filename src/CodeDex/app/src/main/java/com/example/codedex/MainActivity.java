@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final Animation animation = AnimationUtils.loadAnimation(this,R.anim.bounce);
 
 
         //RecyclerView

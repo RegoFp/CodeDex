@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     private ArrayList<Pokemon> dataset;
     private Context context;
     private onItemListener mOnItemListener;
+    private Animation animation;
 
     //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
@@ -38,7 +41,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.bounce);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pokemon,parent,false);
 
         return new ViewHolder(view, mOnItemListener);
@@ -50,6 +53,12 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
         Pokemon pokemon = dataset.get(position);
         holder.pokeName.setText(pokemon.getName()) ;
         holder.pokeId.setText("#"+String.format("%03d", pokemon.getId()));
+
+
+        Animation slide = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide);
+        holder.itemView.startAnimation(slide);
+
+
 
         Glide.with(context)
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.getId()+".png")
@@ -90,6 +99,9 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
         @Override
         public void onClick(View v) {
             onItemListener.onItemClick(getAdapterPosition());
+
+            //TODO No reconoce bien cual esta siendo clicado
+            v.startAnimation(animation);
         }
     }
 
