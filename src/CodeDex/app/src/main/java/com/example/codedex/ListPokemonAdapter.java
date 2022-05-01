@@ -24,14 +24,15 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
 
     private ArrayList<Pokemon> dataset;
     private Context context;
+    private onItemListener mOnItemListener;
 
     //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
 
-    public ListPokemonAdapter(Context context){
+    public ListPokemonAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset=new ArrayList<>();
-
+        this.mOnItemListener = onItemListener;
     }
 
     @NonNull
@@ -40,7 +41,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pokemon,parent,false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnItemListener);
     }
 
 
@@ -67,20 +68,33 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView pokeName;
         private ImageView pokefoto;
         private TextView pokeId;
 
-        public ViewHolder(View itemView){
+        onItemListener onItemListener;
+
+        public ViewHolder(View itemView, onItemListener onItemListener){
             super(itemView);
 
             pokeName = (TextView) itemView.findViewById(R.id.itemName);
             pokefoto = (ImageView) itemView.findViewById(R.id.itemImage);
             pokeId = (TextView) itemView.findViewById(R.id.itemId);
 
+            this.onItemListener = onItemListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface onItemListener{
+        void onItemClick(int position);
 
     }
 

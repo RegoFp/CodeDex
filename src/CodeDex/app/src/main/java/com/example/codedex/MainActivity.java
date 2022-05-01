@@ -31,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener {
 
     private Retrofit retrofit;
     private String id = "1";
@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ListPokemonAdapter listPokemonAdapter;
     private SearchView searchView;
+
+    private ArrayList<Pokemon> pokemonList = new ArrayList<>();
 
 
     @Override
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
 
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.pokeList);
-        listPokemonAdapter = new ListPokemonAdapter(this);
+        listPokemonAdapter = new ListPokemonAdapter(this,this);
         recyclerView.setAdapter(listPokemonAdapter);
         recyclerView.setHasFixedSize(true);
 
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
             public void onResponse(Call<PokemonList> call, Response<PokemonList> response) {
             System.out.println(response.body().getResults().get(1).getName());
 
-            ArrayList<Pokemon> pokemonList = response.body().getResults();
+            pokemonList = response.body().getResults();
 
             listPokemonAdapter.addPokemonItem(pokemonList);
 
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-
+    //Recibe la posicion en la pokedex, realiza la peticio y envia los resultados a una nueva actividad
     private void Pokemon(String id){
         Intent i = new Intent(this, PokemonView.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -173,5 +175,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        Pokemon pokemon = pokemonList.get(position);
+        Pokemon(""+pokemon.getId());
+
+    }
 }
 
