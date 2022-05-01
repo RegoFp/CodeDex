@@ -38,7 +38,11 @@ public class PokemonView extends AppCompatActivity {
         String weight = intent.getStringExtra("weight");
         String height = intent.getStringExtra("height");
         String type = intent.getStringExtra("type1");
-        String type2 = intent.getStringExtra("type2");
+        String type2="nope";
+        if(intent.getStringExtra("type2")!=null){
+            type2 = intent.getStringExtra("type2");
+        }
+
 
         //Cambiar color topLayer
         ConstraintLayout topLayer = (ConstraintLayout) findViewById(R.id.topLayer);
@@ -61,6 +65,7 @@ public class PokemonView extends AppCompatActivity {
         TextView tv4 = (TextView)findViewById(R.id.pokeType);
         tv4.setText(type);
 
+        //TODO explota cuando solo tiene º tipo
         if(type2!=null) {
             TextView tv6 = (TextView) findViewById(R.id.pokeType2);
             tv6.setText(type2);
@@ -70,8 +75,11 @@ public class PokemonView extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.pokeImage);
 
-        Glide.with(this).load("https://img.pokemondb.net/artwork/large/"+name+".jpg").into(imageView);
+        //arte
+        //Glide.with(this).load("https://img.pokemondb.net/artwork/large/"+name+".jpg").into(imageView);
 
+        //sprites
+        Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+id+".png").into(imageView);
     }
 
 

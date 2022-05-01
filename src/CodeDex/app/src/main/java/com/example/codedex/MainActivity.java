@@ -1,12 +1,16 @@
 package com.example.codedex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.codedex.models.PokemonList;
@@ -16,6 +20,7 @@ import com.example.codedex.pokeapi.PokemonClient;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -26,10 +31,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private Retrofit retrofit;
     private String id = "1";
+
+    private RecyclerView recyclerView;
+    private ListPokemonAdapter listPokemonAdapter;
+    private SearchView searchView;
 
 
     @Override
@@ -38,7 +47,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        //RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.pokeList);
+        listPokemonAdapter = new ListPokemonAdapter(this);
+        recyclerView.setAdapter(listPokemonAdapter);
+        recyclerView.setHasFixedSize(true);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+
+        //Iniciar Retrofit
         String API_BASE_URL = "https://pokeapi.co/api/v2/";
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -62,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
 
-    alldata();
+        //Get all Pokemon
+        alldata();
 
 
     }
@@ -76,7 +97,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<PokemonList> call, Response<PokemonList> response) {
             System.out.println(response.body().getResults().get(1).getName());
-            List<Pokemon> pokemon = response.body().getResults();
+
+            ArrayList<Pokemon> pokemonList = response.body().getResults();
+
+            listPokemonAdapter.addPokemonItem(pokemonList);
+
+            for (int i=0;i< pokemonList.size();i++){
+                System.out.println(pokemonList.get(i).getName());
+            }
+
             }
 
             @Override
@@ -85,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        int items = recyclerView.getAdapter().getItemCount();
+        Toast.makeText(this,"hila"+items,Toast.LENGTH_SHORT).show();
+
     }
+
 
     private void Pokemon(String id){
         Intent i = new Intent(this, PokemonView.class);
@@ -138,5 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 }
 

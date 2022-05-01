@@ -1,5 +1,6 @@
 package com.example.codedex.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonList {
@@ -7,7 +8,7 @@ public class PokemonList {
     private int count;
     private String next;
     private String previous;
-    private List<Pokemon> results;
+    private ArrayList<Pokemon> results;
 
     public int getCount() {
         return count;
@@ -21,7 +22,7 @@ public class PokemonList {
         return previous;
     }
 
-    public List<Pokemon> getResults() {
+    public ArrayList<Pokemon> getResults() {
         return results;
     }
 }

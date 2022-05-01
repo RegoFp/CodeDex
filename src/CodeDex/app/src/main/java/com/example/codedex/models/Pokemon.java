@@ -2,6 +2,10 @@ package com.example.codedex.models;
 
 public class Pokemon {
 
+    private int id;
+
+
+
     private String name;
     private String url;
 
@@ -20,4 +24,12 @@ public class Pokemon {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public int getId() {
+        String[] urlSplice = url.split("/");
+
+
+        return Integer.parseInt(urlSplice[urlSplice.length -1]);
+    }
+
 }
