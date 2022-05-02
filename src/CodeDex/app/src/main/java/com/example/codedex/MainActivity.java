@@ -22,6 +22,8 @@ import com.example.codedex.pokeapi.PokemonClient;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
             @Override
             public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
                 PokemonData pokemonData = response.body();
+                Parcelable wrapped = Parcels.wrap(pokemonData);
+                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
+
 
                 List<TypesList> typesList = pokemonData.getTypes();
                 Type type = typesList.get(0).getType();
@@ -142,16 +147,8 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
                 Toast.makeText(getApplicationContext(),type.getName(), Toast.LENGTH_LONG).show();
 
                 //TODO Pasar el objeto entero, no los datos dentro del objeto
-                i.putExtra("id",pokemonData.getId());
-                i.putExtra("name",pokemonData.getName());
-                i.putExtra("weight",pokemonData.getWeight());
-                i.putExtra("height",pokemonData.getHeight());
-                i.putExtra("type1",pokemonData.getTypes().get(0).getType().getName());
-                i.putExtra("type2",pokemonData.getTypes().get(1).getType().getName());
+                i.putExtra("pokemon", wrapped);
 
-                //No se pueden pasar listas
-                // https://stackoverflow.com/questions/6543811/intent-putextra-list
-                //i.putExtra("type", pokemonData.getTypes());
                 startActivity(i);
 
 

@@ -10,12 +10,15 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.models.PokemonData;
+
+import org.parceler.Parcels;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -30,46 +33,16 @@ public class PokemonView extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_view);
 
         Intent intent = getIntent();
-        PokemonData pokemonData = (PokemonData) intent.getSerializableExtra("pokemon");
 
-
-        int id = intent.getIntExtra("id",0);
-        String name = intent.getStringExtra("name");
-        String weight = intent.getStringExtra("weight");
-        String height = intent.getStringExtra("height");
-        String type = intent.getStringExtra("type1");
-        String type2="nope";
-        if(intent.getStringExtra("type2")!=null){
-            type2 = intent.getStringExtra("type2");
-        }
-
+        PokemonData pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
         //Cambiar color topLayer
         ConstraintLayout topLayer = (ConstraintLayout) findViewById(R.id.topLayer);
         topLayer.setBackgroundResource(R.color.grass);
 
         TextView tv1 = (TextView)findViewById(R.id.pokeName);
-        tv1.setText(name);
+        tv1.setText(pokemonData.getName());
 
-        TextView tv5 = (TextView)findViewById(R.id.id);
-        tv5.setText("#"+id);
-
-        TextView tv2 = (TextView)findViewById(R.id.pokeWeight);
-        tv2.setText(weight);
-
-
-        TextView tv3 = (TextView)findViewById(R.id.pokeHeight);
-        tv3.setText(height);
-
-
-        TextView tv4 = (TextView)findViewById(R.id.pokeType);
-        tv4.setText(type);
-
-        //TODO explota cuando solo tiene º tipo
-        if(type2!=null) {
-            TextView tv6 = (TextView) findViewById(R.id.pokeType2);
-            tv6.setText(type2);
-        }
 
 
 
@@ -79,7 +52,7 @@ public class PokemonView extends AppCompatActivity {
         //Glide.with(this).load("https://img.pokemondb.net/artwork/large/"+name+".jpg").into(imageView);
 
         //sprites
-        Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+id+".png").into(imageView);
+        Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemonData.getId()+".png").into(imageView);
     }
 
 

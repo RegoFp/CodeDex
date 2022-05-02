@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.List;
 
-public class PokemonData {
+
+@org.parceler.Parcel
+public class PokemonData{
 
 
 
@@ -15,15 +17,20 @@ public class PokemonData {
     private String height;
     private String weight;
     private List<TypesList> types;
-
-
-
     private List<MoveList> moves;
 
 
     public PokemonData() {
 
     }
+
+    protected PokemonData(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        height = in.readString();
+        weight = in.readString();
+    }
+
 
     public int getId() {
         return id;

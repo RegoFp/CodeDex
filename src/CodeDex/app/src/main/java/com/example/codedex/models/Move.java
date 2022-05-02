@@ -1,5 +1,8 @@
 package com.example.codedex.models;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Move {
 
     public String getName() {
@@ -10,8 +13,8 @@ public class Move {
         return url;
     }
 
-    private String name;
-    private String url;
+    String name;
+    String url;
 
 
 }
