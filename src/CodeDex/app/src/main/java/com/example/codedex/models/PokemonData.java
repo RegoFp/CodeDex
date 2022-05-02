@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.List;
 
-
+//http://parceler.org/
 @org.parceler.Parcel
 public class PokemonData{
 
