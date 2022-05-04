@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.pokeList);
+
+
         listPokemonAdapter = new ListPokemonAdapter(this,this);
         recyclerView.setAdapter(listPokemonAdapter);
         recyclerView.setHasFixedSize(true);
@@ -161,17 +163,6 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
                 Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
             }
         });
-
-    }
-
-    public void onclick(View v){
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String id ="2" ;
-        id = (String) editText.getText().toString();
-
-        Pokemon(id);
-
-
 
     }
 

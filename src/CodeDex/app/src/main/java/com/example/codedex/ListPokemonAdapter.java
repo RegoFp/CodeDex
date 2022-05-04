@@ -51,7 +51,8 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Pokemon pokemon = dataset.get(position);
-        holder.pokeName.setText(pokemon.getName()) ;
+        String name = pokemon.getName();
+        holder.pokeName.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
         holder.pokeId.setText("#"+String.format("%03d", pokemon.getId()));
 
 

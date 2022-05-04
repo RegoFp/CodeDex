@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.models.PokemonData;
+import com.google.android.material.tabs.TabLayout;
 
 import org.parceler.Parcels;
 
@@ -74,6 +76,12 @@ public class PokemonView extends AppCompatActivity {
 
         //sprites
         //Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemonData.getId()+".png").into(imageView);
+
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayoutPokeView);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+
     }
 
     private void typeSelector(ImageView imageView, String type) {
