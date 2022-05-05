@@ -1,8 +1,15 @@
 package com.example.codedex;
 
 import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,26 +26,43 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.models.PokemonData;
+import com.example.codedex.models.SpecieData;
+import com.example.codedex.pokeapi.PokemonClient;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.parceler.Parcels;
 
 import java.io.InputStream;
 import java.net.URL;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class PokemonView extends AppCompatActivity {
 
     private PokemonData pokemonData;
+    private Retrofit retrofit;
+    private SpecieData specieData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_view);
 
+
         Intent intent = getIntent();
 
         pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
+
+        //Add data to toplayer
         //Cambiar color topLayer
         ConstraintLayout topLayer = (ConstraintLayout) findViewById(R.id.topLayer);
         topLayer.setBackgroundResource(R.color.pokeRed);
@@ -78,9 +102,30 @@ public class PokemonView extends AppCompatActivity {
         //Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemonData.getId()+".png").into(imageView);
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayoutPokeView);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
+
+
+        //Configure screens
+        ViewPager2 viewPager2 = (ViewPager2) findViewById(R.id.viewpagerPokeView);
+
+        viewPager2.setAdapter(
+                new viewAdapter(this)
+        );
+
+        String[]  tabs ={"details","moves"};
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayoutPokeView);
+        new TabLayoutMediator(
+                tabLayout,
+                viewPager2,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                            tab.setText(tabs[position]);
+
+                    }
+                }
+        ).attach();
 
     }
 
@@ -98,4 +143,41 @@ public class PokemonView extends AppCompatActivity {
 
     }
 
+
+    class viewAdapter extends FragmentStateAdapter{
+
+
+        public viewAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+        }
+
+        public viewAdapter(@NonNull Fragment fragment) {
+            super(fragment);
+        }
+
+        public viewAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+
+            switch (position) {
+                case 0:
+                    return new PokeViewFragment(pokemonData);
+                case 1:
+                    return new PokeViewMovesFragment();
+                default:
+                    return new PokeViewMovesFragment();
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+    }
 }
+
+

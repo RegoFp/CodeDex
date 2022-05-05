@@ -3,10 +3,10 @@ package com.example.codedex.models;
 import org.parceler.Parcel;
 
 @Parcel
-public class Move {
+public class SpeciesList {
 
-    String name;
-    String url;
+    private String name;
+    private String url;
 
     public String getName() {
         return name;
@@ -15,8 +15,4 @@ public class Move {
     public String getUrl() {
         return url;
     }
-
-
-
-
 }

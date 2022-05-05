@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
                 //Toast.makeText(getApplicationContext(),bulbasur.getName(), Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(),type.getName(), Toast.LENGTH_LONG).show();
 
-                //TODO Pasar el objeto entero, no los datos dentro del objeto
+
                 i.putExtra("pokemon", wrapped);
 
                 startActivity(i);

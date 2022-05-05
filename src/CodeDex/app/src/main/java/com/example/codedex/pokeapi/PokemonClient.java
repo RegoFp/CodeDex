@@ -3,6 +3,7 @@ package com.example.codedex.pokeapi;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.PokemonList;
+import com.example.codedex.models.SpecieData;
 
 import java.util.List;
 
@@ -21,5 +22,8 @@ public interface PokemonClient {
     //Pokemon por su nº en la pokedex
     @GET("pokemon/{id}")
     Call<PokemonData> getPokemonById(@Path("id") String id);
+
+    @GET("pokemon-species/{id}")
+    Call<SpecieData> getSpecieById(@Path("id") Integer id);
 
 }

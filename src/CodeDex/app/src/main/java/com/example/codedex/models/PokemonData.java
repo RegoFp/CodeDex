@@ -18,18 +18,13 @@ public class PokemonData{
     private String weight;
     private List<TypesList> types;
     private List<MoveList> moves;
-
+    private SpeciesList species;
+    private List<AbilitiesList> abilities;
 
     public PokemonData() {
 
     }
 
-    protected PokemonData(Parcel in) {
-        id = in.readInt();
-        name = in.readString();
-        height = in.readString();
-        weight = in.readString();
-    }
 
 
     public int getId() {
@@ -56,5 +51,11 @@ public class PokemonData{
         return moves;
     }
 
+    public SpeciesList getSpecies() {
+        return species;
+    }
 
+    public List<AbilitiesList> getAbilities() {
+        return abilities;
+    }
 }
