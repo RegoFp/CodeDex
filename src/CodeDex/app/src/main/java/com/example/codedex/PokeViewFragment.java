@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -82,11 +83,18 @@ public class PokeViewFragment extends Fragment {
             @Override
             public void onResponse(Call<SpecieData> call, Response<SpecieData> response) {
                 SpecieData specieData = response.body();
+                TextView description = (TextView) root.findViewById(R.id.description);
+                for (final FlavorText flavorText: specieData.getFlavor_text()){
+                    if(flavorText.getLanguage().getName().equalsIgnoreCase("en")){
+                        description.setText(flavorText.getFlavor_text().replaceAll("\\\n"," "));
+                        break;
+                    }
+
+                }
 
                 //TODO make sure its in english with a foor loop
-                TextView description = (TextView) root.findViewById(R.id.description);
-                String desc = specieData.getFlavor_text().get(0).getFlavor_text();
-                description.setText(specieData.getFlavor_text().get(0).getFlavor_text().replaceAll("\\\n", " "));
+
+
             }
 
             @Override

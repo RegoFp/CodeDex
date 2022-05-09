@@ -1,14 +1,15 @@
 package com.example.codedex.models;
 
-import android.os.Parcel;
 import android.os.Parcelable;
+
+import org.parceler.Parcel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //http://parceler.org/
-@org.parceler.Parcel
+@Parcel
 public class PokemonData{
 
 

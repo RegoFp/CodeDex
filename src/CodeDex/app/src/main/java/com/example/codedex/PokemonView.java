@@ -58,9 +58,8 @@ public class PokemonView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_view);
 
-
+        //Get object
         Intent intent = getIntent();
-
         pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
 

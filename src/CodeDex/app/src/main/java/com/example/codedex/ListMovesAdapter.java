@@ -44,7 +44,22 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
 
         MoveList movelist = dataset.get(position);
         String name = movelist.getMove().getName();
+        String learnMethod = movelist.getVersion_group_details().get(0).getMove_learn_method().getName();
+
+        int level = movelist.getVersion_group_details().get(0).getLevel_learned_at();
+        if(level == 0){
+            holder.moveLevel.setText("-");
+
+        }else{
+            holder.moveLevel.setText(""+level);
+
+        }
+
         holder.moveName.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
+        holder.moveLearn.setText(learnMethod.substring(0, 1).toUpperCase() + learnMethod.substring(1));
+
+
+
         //holder.pokeId.setText("#"+String.format("%03d", pokemon.getId()));
 
 
@@ -68,11 +83,16 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView moveName;
+        private TextView moveLearn;
+        private TextView moveLevel;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             moveName = (TextView) itemView.findViewById(R.id.moveName);
+            moveLearn = (TextView) itemView.findViewById(R.id.moveLearn);
+            moveLevel = (TextView) itemView.findViewById(R.id.moveLevel);
+
         }
 
         @Override

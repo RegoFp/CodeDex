@@ -14,6 +14,8 @@ import com.example.codedex.models.MoveList;
 import com.example.codedex.models.Pokemon;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 
 
 public class PokeViewMovesFragment extends Fragment {
@@ -57,9 +59,10 @@ public class PokeViewMovesFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+
         listMovesAdapter.addMoveItem(Movelist);
 
-        
+
 
         return root;
     }
