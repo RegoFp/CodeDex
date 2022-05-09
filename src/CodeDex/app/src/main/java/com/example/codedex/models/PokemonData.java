@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 //http://parceler.org/
@@ -17,7 +18,7 @@ public class PokemonData{
     private String height;
     private String weight;
     private List<TypesList> types;
-    private List<MoveList> moves;
+    private ArrayList<MoveList> moves;
     private SpeciesList species;
     private List<AbilitiesList> abilities;
 
@@ -47,7 +48,7 @@ public class PokemonData{
         return types;
     }
 
-    public List<MoveList> getMoves() {
+    public ArrayList<MoveList> getMoves() {
         return moves;
     }
 

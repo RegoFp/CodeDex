@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.codedex.models.MoveList;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -35,6 +36,7 @@ import org.parceler.Parcels;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -163,13 +165,15 @@ public class PokemonView extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
 
+            ArrayList<MoveList> moveLists = pokemonData.getMoves();
+
             switch (position) {
                 case 0:
                     return new PokeViewFragment(pokemonData);
                 case 1:
-                    return new PokeViewMovesFragment();
+                    return new PokeViewMovesFragment(moveLists);
                 default:
-                    return new PokeViewMovesFragment();
+                    return new PokeViewMovesFragment(moveLists);
             }
         }
 
