@@ -89,6 +89,7 @@ public class PokeViewMovesFragment extends Fragment {
 
                 listMovesAdapter.clearAllData();
                 listMovesAdapter.addMoveItem(Movelist);
+                recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
             }
         });
@@ -112,8 +113,10 @@ public class PokeViewMovesFragment extends Fragment {
                     }
 
                 }
+
                 listMovesAdapter.clearAllData();
                 listMovesAdapter.addMoveItem(filteredMoveList);
+                recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
             }
         });
@@ -137,6 +140,7 @@ public class PokeViewMovesFragment extends Fragment {
                 }
                 listMovesAdapter.clearAllData();
                 listMovesAdapter.addMoveItem(filteredMoveList);
+                recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
             }
         });
@@ -161,6 +165,7 @@ public class PokeViewMovesFragment extends Fragment {
                 }
                 listMovesAdapter.clearAllData();
                 listMovesAdapter.addMoveItem(filteredMoveList);
+                recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
             }
         });
