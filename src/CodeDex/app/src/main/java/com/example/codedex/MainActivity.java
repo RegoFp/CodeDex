@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
     private ArrayList<Pokemon> pokemonList = new ArrayList<>();
 
+    //TODO https://www.youtube.com/watch?v=HwYENW0RyY4
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,5 +176,9 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         Pokemon(""+pokemon.getId());
 
     }
+
+
+
+
 }
 

@@ -92,7 +92,6 @@ public class PokeViewFragment extends Fragment {
 
                 }
 
-                //TODO make sure its in english with a foor loop
 
 
             }
@@ -105,7 +104,7 @@ public class PokeViewFragment extends Fragment {
 
         // Inflate the layout for this fragment
 
-        //TODO disable when not enough abilities
+
         if(pokemonData.getAbilities().size()>0){
             TextView ability1 = root.findViewById(R.id.ability1);
             ability1.setText(pokemonData.getAbilities().get(0).getAbility().getName());

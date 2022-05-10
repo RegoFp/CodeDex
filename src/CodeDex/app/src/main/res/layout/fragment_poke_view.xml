@@ -8,7 +8,7 @@
     tools:context=".PokeViewFragment"
     android:background="@color/black">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
     <LinearLayout
         android:layout_width="match_parent"

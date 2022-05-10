@@ -80,6 +80,12 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
 
     }
 
+    public  void  clearAllData(){
+        dataset.clear();
+        notifyDataSetChanged();
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView moveName;
