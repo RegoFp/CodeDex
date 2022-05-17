@@ -1,5 +1,8 @@
 package com.example.codedex.pokeapi;
 
+import com.example.codedex.models.AllMovesList;
+import com.example.codedex.models.MoveData;
+import com.example.codedex.models.MoveList;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.PokemonList;
@@ -25,5 +28,13 @@ public interface PokemonClient {
 
     @GET("pokemon-species/{id}")
     Call<SpecieData> getSpecieById(@Path("id") Integer id);
+
+    @GET("move?limit=100000&offset=0")
+    Call<AllMovesList> Allmoves(
+
+    );
+
+    @GET("move/{name}")
+    Call<MoveData> getMoveData(@Path("name") String name);
 
 }

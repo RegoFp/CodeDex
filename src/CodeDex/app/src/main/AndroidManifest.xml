@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeDex">
         <activity
+            android:name=".AllMovesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchMoveActivity"
+            android:exported="false" />
+        <activity
             android:name=".PokemonView"
             android:exported="false" />
         <activity

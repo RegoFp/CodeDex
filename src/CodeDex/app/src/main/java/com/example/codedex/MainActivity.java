@@ -27,6 +27,7 @@ import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
+import com.google.android.material.navigation.NavigationView;
 
 import org.parceler.Parcels;
 
@@ -41,7 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener {
+public class MainActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener, NavigationView.OnNavigationItemSelectedListener {
 
     private Retrofit retrofit;
     private String id = "1";
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         setContentView(R.layout.activity_main);
 
         final Animation animation = AnimationUtils.loadAnimation(this,R.anim.bounce);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.mainMenu);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         //RecyclerView
@@ -128,7 +132,18 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+
+            switch (item.getItemId()) {
+                case R.id.menu_pokemon:
+                    Toast.makeText(this, "sup", Toast.LENGTH_LONG).show();
+                    break;
+                case R.id.menu_moves:
+                    Intent i = new Intent(this, SearchMoveActivity.class);
+                    startActivity(i);
+                    break;
+
+
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -210,7 +225,24 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        switch (item.getItemId()) {
 
+            case R.id.menu_abilities:
+                //TODO
+                break;
+
+            case R.id.menu_moves: {
+                Intent i = new Intent(this, AllMovesActivity.class);
+                startActivity(i);
+                break;
+            }
+        }
+        //close navigation drawer
+        return true;
+
+    }
 }
 

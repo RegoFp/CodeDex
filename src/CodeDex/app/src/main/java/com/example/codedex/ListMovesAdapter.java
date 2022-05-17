@@ -60,6 +60,7 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
 
 
 
+
         //holder.pokeId.setText("#"+String.format("%03d", pokemon.getId()));
 
 
@@ -91,6 +92,8 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
         private TextView moveName;
         private TextView moveLearn;
         private TextView moveLevel;
+        private TextView movePower;
+        private TextView movePP;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +101,8 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
             moveName = (TextView) itemView.findViewById(R.id.moveName);
             moveLearn = (TextView) itemView.findViewById(R.id.moveLearn);
             moveLevel = (TextView) itemView.findViewById(R.id.moveLevel);
+            movePower = (TextView) itemView.findViewById(R.id.movePower);
+            movePP = (TextView) itemView.findViewById(R.id.movePP);
 
         }
 

@@ -17,6 +17,7 @@ import com.example.codedex.models.Pokemon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -29,7 +30,14 @@ public class PokeViewMovesFragment extends Fragment {
 
     public PokeViewMovesFragment(ArrayList<MoveList> moveList) {
 
-        this.Movelist = moveList;
+        Movelist = moveList;
+
+        //Ordena la lista por nivel en el que se aprende
+        Collections.sort(Movelist, new Comparator<MoveList>() {
+            @Override public int compare(MoveList x, MoveList y) {
+                return x.compareTo(y);
+            }
+        });
         // Required empty public constructor
     }
 
@@ -64,7 +72,25 @@ public class PokeViewMovesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        listMovesAdapter.addMoveItem(Movelist);
+        ArrayList<MoveList> filteredMoveList = new ArrayList<>();
+
+        for (MoveList ml : Movelist) {
+            if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Level-up")){
+
+                filteredMoveList.add(ml);
+            }
+
+        }
+
+
+        Collections.sort(filteredMoveList, new Comparator<MoveList>() {
+            @Override public int compare(MoveList x, MoveList y) {
+                return x.compareTo(y);
+            }
+        });
+
+        listMovesAdapter.clearAllData();
+        listMovesAdapter.addMoveItem(filteredMoveList);
 
         //Configures onclicklisteners to the buttons
         onclickButtons(root);
@@ -79,16 +105,33 @@ public class PokeViewMovesFragment extends Fragment {
 
     public void onclickButtons(View root){
 
-        //Boton All
-        Button buttonAll = (Button) root.findViewById(R.id.filterAll);
+        Button buttonAll = (Button) root.findViewById(R.id.filterEgg);
         buttonAll.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
 
+
+                ArrayList<MoveList> filteredMoveList = new ArrayList<>();
+
+                for (MoveList ml : Movelist) {
+                    if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Egg")){
+
+                        filteredMoveList.add(ml);
+                    }
+
+                }
+
+
+                Collections.sort(filteredMoveList, new Comparator<MoveList>() {
+                    @Override public int compare(MoveList x, MoveList y) {
+                        return x.compareTo(y);
+                    }
+                });
+
                 listMovesAdapter.clearAllData();
-                listMovesAdapter.addMoveItem(Movelist);
+                listMovesAdapter.addMoveItem(filteredMoveList);
                 recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
             }
@@ -113,6 +156,13 @@ public class PokeViewMovesFragment extends Fragment {
                     }
 
                 }
+
+
+                Collections.sort(filteredMoveList, new Comparator<MoveList>() {
+                    @Override public int compare(MoveList x, MoveList y) {
+                        return x.compareTo(y);
+                    }
+                });
 
                 listMovesAdapter.clearAllData();
                 listMovesAdapter.addMoveItem(filteredMoveList);

@@ -1,9 +1,9 @@
-package com.example.codedex.models;
+package com.example.codedex.models.damageRelations;
 
 import org.parceler.Parcel;
 
 @Parcel
-public class DamageClass {
+public class DoubleDamageFrom {
 
     private String name;
     private String url;

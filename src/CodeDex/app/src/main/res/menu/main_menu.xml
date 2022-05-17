@@ -7,10 +7,10 @@
 
     <item
         android:id="@+id/menu_moves"
-        android:title="moves" />
+        android:title="Moves" />
 
     <item
         android:id="@+id/menu_abilities"
-        android:title="abilities" />
+        android:title="Abilities" />
 
 </menu>
