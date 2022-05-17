@@ -1,5 +1,6 @@
 package com.example.codedex;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,13 +23,16 @@ import java.util.Comparator;
 import java.util.List;
 
 
-public class PokeViewMovesFragment extends Fragment {
+public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.onItemListener {
 
     private RecyclerView recyclerView;
     private ArrayList<MoveList> Movelist = new ArrayList<>();
+    private ArrayList<MoveList> filteredMoveList = new ArrayList<>();
+    View root;
     private ListMovesAdapter listMovesAdapter;
 
     public PokeViewMovesFragment(ArrayList<MoveList> moveList) {
+
 
         Movelist = moveList;
 
@@ -58,21 +62,20 @@ public class PokeViewMovesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View root = inflater.inflate(R.layout.fragment_poke_view_moves, null);
+        root = inflater.inflate(R.layout.fragment_poke_view_moves, null);
 
         //RecyclerView
         recyclerView = (RecyclerView) root.findViewById(R.id.movesList);
 
 
-        listMovesAdapter = new ListMovesAdapter(root.getContext());
+        listMovesAdapter = new ListMovesAdapter(root.getContext(),this);
         recyclerView.setAdapter(listMovesAdapter);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-
-        ArrayList<MoveList> filteredMoveList = new ArrayList<>();
+        filteredMoveList.clear();
 
         for (MoveList ml : Movelist) {
             if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Level-up")){
@@ -107,14 +110,13 @@ public class PokeViewMovesFragment extends Fragment {
 
         Button buttonAll = (Button) root.findViewById(R.id.filterEgg);
         buttonAll.setOnClickListener(new View.OnClickListener()
+
         {
             @Override
             public void onClick(View v)
             {
 
-
-                ArrayList<MoveList> filteredMoveList = new ArrayList<>();
-
+                filteredMoveList.clear();
                 for (MoveList ml : Movelist) {
                     if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Egg")){
 
@@ -147,8 +149,7 @@ public class PokeViewMovesFragment extends Fragment {
             {
 
 
-                ArrayList<MoveList> filteredMoveList = new ArrayList<>();
-
+                filteredMoveList.clear();
                 for (MoveList ml : Movelist) {
                     if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("level-up")){
 
@@ -179,8 +180,7 @@ public class PokeViewMovesFragment extends Fragment {
             {
 
 
-                ArrayList<MoveList> filteredMoveList = new ArrayList<>();
-
+                filteredMoveList.clear();
                 for (MoveList ml : Movelist) {
                     if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("machine")){
 
@@ -204,8 +204,7 @@ public class PokeViewMovesFragment extends Fragment {
             {
                 Toast.makeText(getContext(),"test", Toast.LENGTH_LONG).show();
 
-                ArrayList<MoveList> filteredMoveList = new ArrayList<>();
-
+                filteredMoveList.clear();
                 for (MoveList ml : Movelist) {
                     if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("tutor")){
 
@@ -222,4 +221,12 @@ public class PokeViewMovesFragment extends Fragment {
 
     }
 
+    //Clicar en movimiento
+    @Override
+    public void onItemClick(int position) {
+        Intent i = new Intent(root.getContext(), MoveView.class);
+        startActivity(i);
+
+
+    }
 }

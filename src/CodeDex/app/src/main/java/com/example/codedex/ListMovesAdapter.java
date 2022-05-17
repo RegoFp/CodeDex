@@ -22,10 +22,12 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
 
     private ArrayList<MoveList> dataset;
     private Context context;
+    private onItemListener onItemListener;
 
-    public ListMovesAdapter(Context context){
+    public ListMovesAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset= new ArrayList<>();
+        this.onItemListener = onItemListener;
 
         // this.mOnItemListener = onItemListener;
     }
@@ -36,7 +38,7 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_move,parent,false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, onItemListener);
     }
 
     @Override
@@ -95,8 +97,11 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
         private TextView movePower;
         private TextView movePP;
 
-        public ViewHolder(@NonNull View itemView) {
+        onItemListener onItemListener;
+
+        public ViewHolder(@NonNull View itemView, onItemListener onItemListener) {
             super(itemView);
+
 
             moveName = (TextView) itemView.findViewById(R.id.moveName);
             moveLearn = (TextView) itemView.findViewById(R.id.moveLearn);
@@ -104,15 +109,27 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
             movePower = (TextView) itemView.findViewById(R.id.movePower);
             movePP = (TextView) itemView.findViewById(R.id.movePP);
 
+            this.onItemListener = onItemListener;
+            itemView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
+
 
         }
     }
 
+    public interface onItemListener{
+        void onItemClick(int position);
 
     }
+
+
+
+
+}
 
 
