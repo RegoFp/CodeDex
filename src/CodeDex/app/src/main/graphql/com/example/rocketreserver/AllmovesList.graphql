@@ -1,0 +1,13 @@
+query Allmoves {
+  move: pokemon_v2_move {
+    name
+    id
+    accuracy
+    move_effect_id
+
+    types: pokemon_v2_movedamageclass{
+      name
+
+    }
+  }
+}
