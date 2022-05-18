@@ -162,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
             listPokemonAdapter.addPokemonItem(pokemonList);
 
-            for (int i=0;i< pokemonList.size();i++){
-                System.out.println(pokemonList.get(i).getName());
-            }
 
             }
 
