@@ -10,7 +10,29 @@
 
 
     <color name="pokeRed">#FF6363</color>
-    <color name="grass">#64A565</color>
-    <color name="fire">#FF9800</color>
+
+
+    <color name="Bug">#A6BC0E</color>
+    <color name="Dark">#7A5846</color>
+    <color name="Dragon">#8C46FE</color>
+    <color name="Electric">#FFD83E</color>
+    <color name="Fairy">#FF9BAF</color>
+    <color name="Fighting">#E6453D</color>
+    <color name="fire">#FF8731</color>
+    <color name="Flying">#BB9FF6</color>
+    <color name="Ghost">#896BA7</color>
+    <color name="grass">#51CF55</color>
+    <color name="Ground">#EFCA78</color>
+    <color name="Ice">#73D9D9</color>
+    <color name="Normal">#B7B78B</color>
+    <color name="Poison">#C355AF</color>
+    <color name="Psychic">#FF729D</color>
+    <color name="Rock">#A18935</color>
+    <color name="Steel">#C5C5D9</color>
+    <color name="Water">#669FF6</color>
+
+
+
+
 
 </resources>

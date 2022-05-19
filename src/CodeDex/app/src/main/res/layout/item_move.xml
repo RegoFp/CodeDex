@@ -18,7 +18,7 @@
 
             <TextView
                 android:id="@+id/moveLevel"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
@@ -26,36 +26,38 @@
 
             <TextView
                 android:id="@+id/moveName"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
                 android:text="nombre"/>
 
-            <TextView
-                android:id="@+id/moveLearn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:text="metodo"/>
+            <ImageView
+                android:id="@+id/moveType"
+                android:layout_marginLeft="10dp"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
 
-            <TextView
-                android:id="@+id/movePower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:text="metodo"/>
+                app:srcCompat="@drawable/type_" />
 
             <TextView
                 android:id="@+id/movePP"
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="PP"/>
+
+            <TextView
+                android:id="@+id/movePower"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
-                android:text="metodo"/>
-
+                android:text="ACC"/>
 
 
         </LinearLayout>

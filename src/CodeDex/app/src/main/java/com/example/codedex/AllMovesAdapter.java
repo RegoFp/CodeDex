@@ -5,8 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.codedex.models.Move;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
-import com.example.codedex.models.Pokemon;
 import com.example.codedex.pokeapi.PokemonClient;
-
 
 import java.util.ArrayList;
 
@@ -30,14 +26,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.ViewHolder> {
+public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHolder> {
 
-    private ArrayList<MoveList> dataset;
+    private ArrayList<Move> dataset;
     private Context context;
     private onItemListener onItemListener;
     private Retrofit retrofit;
 
-    public ListMovesAdapter(Context context, onItemListener onItemListener){
+    public AllMovesAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset= new ArrayList<>();
         this.onItemListener = onItemListener;
@@ -58,19 +54,9 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        MoveList movelist = dataset.get(position);
-        String name = movelist.getMove().getName();
-        String learnMethod = movelist.getVersion_group_details().get(0).getMove_learn_method().getName();
-
-        int level = movelist.getVersion_group_details().get(0).getLevel_learned_at();
-        if(level == 0){
-            holder.moveLevel.setText("-");
-
-        }else{
-            holder.moveLevel.setText(""+level);
-
-        }
-
+        Move movelist = dataset.get(position);
+        String name = movelist.getName();
+        holder.moveLevel.setVisibility(View.INVISIBLE);
         holder.moveName.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
 
 
@@ -117,7 +103,7 @@ public class ListMovesAdapter  extends RecyclerView.Adapter<ListMovesAdapter.Vie
         return dataset.size();
     }
 
-    public void addMoveItem(ArrayList<MoveList> MoveList) {
+    public void addMoveItem(ArrayList<Move> MoveList) {
         dataset.addAll(MoveList);
         notifyDataSetChanged();
 

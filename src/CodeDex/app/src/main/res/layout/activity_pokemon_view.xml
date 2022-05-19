@@ -64,8 +64,9 @@
             app:layout_constraintHorizontal_bias="0.03"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:alpha="0.2"
             android:layout_marginStart="1dp"
-            app:cardBackgroundColor="#CD5151"
+            app:cardBackgroundColor="@color/black"
             android:layout_marginTop="29dp"/>
 
 

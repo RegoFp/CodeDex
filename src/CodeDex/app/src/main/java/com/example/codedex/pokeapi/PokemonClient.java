@@ -26,7 +26,9 @@ public interface PokemonClient {
     @GET("pokemon/{id}")
     Call<PokemonData> getPokemonById(@Path("id") String id);
 
+    //Peticion
     @GET("pokemon-species/{id}")
+    //El objeto que se recibe y a la derecha variable que enviamoes
     Call<SpecieData> getSpecieById(@Path("id") Integer id);
 
     @GET("move?limit=100000&offset=0")

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PokeViewMovesFragment"
-    android:background="@color/black">
+    android:background="#AAFF6363">
 
 
     <LinearLayout
@@ -24,6 +24,7 @@
             android:layout_weight="1.0"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
+            android:backgroundTint="@color/pokeRed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -33,6 +34,7 @@
             android:id="@+id/filterMachine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/pokeRed"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
             android:layout_weight="1.0"
@@ -43,6 +45,7 @@
             android:layout_weight="1.0"
             android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
+            android:backgroundTint="@color/pokeRed"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Tutor" />
@@ -52,54 +55,21 @@
             android:layout_weight="1.0"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
+            android:backgroundTint="@color/pokeRed"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Egg" />
 
     </LinearLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        app:cardCornerRadius="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BotonLine">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="27dp"
-                android:text="ID" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="name" />
-
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movesList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/BotonLine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

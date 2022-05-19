@@ -78,17 +78,24 @@ public class PokeViewFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_poke_view, null);
 
         PokemonClient client =  retrofit.create(PokemonClient.class);
+
         Call<SpecieData> call = client.getSpecieById(pokemonData.getId());
+
         call.enqueue(new Callback<SpecieData>() {
             @Override
             public void onResponse(Call<SpecieData> call, Response<SpecieData> response) {
+
                 SpecieData specieData = response.body();
                 TextView description = (TextView) root.findViewById(R.id.description);
+
                 for (final FlavorText flavorText: specieData.getFlavor_text()){
+
                     if(flavorText.getLanguage().getName().equalsIgnoreCase("en")){
+
                         description.setText(flavorText.getFlavor_text().replaceAll("\\\n"," "));
                         break;
                     }
+
 
                 }
 

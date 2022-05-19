@@ -80,7 +80,6 @@ public class PokemonView extends AppCompatActivity {
 
         typeSelector(ivType1,pokemonData.getTypes().get(0).getType().getName());
 
-
         ImageView ivType2 = (ImageView) findViewById(R.id.pokeType2);
         if(pokemonData.getTypes().size()>1){
 

@@ -16,16 +16,13 @@ import android.widget.Toast;
 
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
-import com.example.codedex.models.Pokemon;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -275,7 +272,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
 
     public void getMove(String name) {
 
-        Intent i = new Intent(root.getContext(), MoveView.class);
+        Intent i = new Intent(root.getContext(), MoveViewActivity.class);
 
 
         PokemonClient client = retrofit.create(PokemonClient.class);
@@ -288,7 +285,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
                 i.putExtra("move", wrapped);
 
                 startActivity(i);
-
+                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
             }
 
             @Override
