@@ -87,7 +87,6 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
         recyclerView.setLayoutManager(layoutManager);
 
         filteredMoveList.clear();
-
         for (MoveList ml : Movelist) {
             if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Level-up")){
 

@@ -16,9 +16,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -62,6 +64,15 @@ public class PokemonView extends AppCompatActivity {
         Intent intent = getIntent();
         pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
+        getSupportActionBar().hide();
+        Window window = this.getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
+            getWindow().setNavigationBarColor(Color.parseColor("#AAFF6363"));
+        }
 
         //Add data to toplayer
         //Cambiar color topLayer

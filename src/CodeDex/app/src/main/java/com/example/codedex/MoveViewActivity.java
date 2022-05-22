@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_view);
+
+        getSupportActionBar().hide();
+
 
         Intent intent = getIntent();
         moveData = Parcels.unwrap(getIntent().getParcelableExtra("move"));
@@ -245,7 +249,18 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.moveDataBackground);
         constraintLayout.setBackgroundColor(color);
+
+
+        Window window = this.getWindow();
+        window.setStatusBarColor(color);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(color);
+        }
+
+
         System.out.println( ""+ red);
+
 
 
 
