@@ -5,9 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
+import android.view.Window;
 
 import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.Move;
@@ -43,7 +46,19 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
         setContentView(R.layout.activity_all_moves);
 
         startRetrofit();
+
+
+        getSupportActionBar().hide();
+        Window window = this.getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
+        }
+
         recyclerView = (RecyclerView) findViewById(R.id.allMovesRecycler);
+
 
 
         listMovesAdapter = new AllMovesAdapter(this,this);

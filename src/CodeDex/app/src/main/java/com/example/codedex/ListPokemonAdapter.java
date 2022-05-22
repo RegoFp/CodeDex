@@ -71,7 +71,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Pokemon pokemon = dataset.get(position);
         String name = pokemon.getName();
-        holder.pokeName.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
+        holder.pokeName.setText(name.substring(0, 1).toUpperCase() + name.substring(1).replace("-"," "));
 
         if(pokemon.getId()>10000){
             holder.pokeId.setText("   ---");

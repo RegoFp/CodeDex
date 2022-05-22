@@ -46,7 +46,7 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_move,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_item_move,parent,false);
         startRetrofit();
         return new ViewHolder(view, onItemListener);
     }
@@ -56,8 +56,11 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
 
         Move movelist = dataset.get(position);
         String name = movelist.getName();
-        holder.moveLevel.setVisibility(View.INVISIBLE);
-        holder.moveName.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
+        holder.moveName.setText(name.substring(0, 1).toUpperCase() + name.substring(1).replace("-"," "));
+        holder.movePP.setVisibility(View.GONE);
+        holder.movePower.setVisibility(View.GONE);
+
+
 
 
 
@@ -69,14 +72,19 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
                 MoveData moveData = response.body();
 
                 String type = moveData.getType().getName();
-
                 String uri = "@drawable/type_"+type;  // where myresource (without the extension) is the file
-
                 int imageResource = holder.itemView.getContext().getResources().getIdentifier(uri, null, holder.itemView.getContext().getPackageName());
-
-
                 Drawable res = holder.itemView.getContext().getResources().getDrawable(imageResource);
                 holder.type.setImageDrawable(res);
+
+
+                String dmg = moveData.getDamage_class().getName();
+                String uri2 = "@drawable/dmg_"+dmg;  // where myresource (without the extension) is the file
+                int imageResource2 = holder.itemView.getContext().getResources().getIdentifier(uri2, null, holder.itemView.getContext().getPackageName());
+                Drawable res2 = holder.itemView.getContext().getResources().getDrawable(imageResource2);
+                holder.dmg.setImageDrawable(res2);
+
+
                 holder.movePP.setText(""+moveData.getPp());
                 holder.movePower.setText(""+moveData.getPower());
 
@@ -123,6 +131,7 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
         private TextView movePower;
         private TextView movePP;
         private ImageView type;
+        private ImageView dmg;
 
         onItemListener onItemListener;
 
@@ -135,6 +144,7 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
             movePower = (TextView) itemView.findViewById(R.id.movePower);
             movePP = (TextView) itemView.findViewById(R.id.movePP);
             type = (ImageView) itemView.findViewById(R.id.moveType);
+            dmg = (ImageView) itemView.findViewById(R.id.moveDmg);
 
 
             this.onItemListener = onItemListener;

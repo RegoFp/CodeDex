@@ -120,25 +120,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/moveDataDamageClass" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/moveDataDamageClass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
                 android:elevation="10dp"
-                android:text="Damageclass"
+                android:src="@drawable/type_"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.75"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/moveDataName" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/moveDataDamageType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
                 android:elevation="10dp"
-                android:text="Type"
+                android:src="@drawable/type_"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintStart_toStartOf="parent"

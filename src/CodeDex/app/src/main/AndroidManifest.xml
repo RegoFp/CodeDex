@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeDex">
         <activity
+            android:name=".AllAbilitiesViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".MoveViewActivity"
             android:exported="false" />
         <activity

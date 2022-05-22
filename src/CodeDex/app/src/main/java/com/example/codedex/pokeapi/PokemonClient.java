@@ -1,5 +1,6 @@
 package com.example.codedex.pokeapi;
 
+import com.example.codedex.models.AllAbilities;
 import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
@@ -35,6 +36,12 @@ public interface PokemonClient {
     Call<AllMovesList> Allmoves(
 
     );
+
+    @GET("ability?limit=100000&offset=0")
+    Call<AllAbilities> AllAbilities(
+
+    );
+
 
     @GET("move/{name}")
     Call<MoveData> getMoveData(@Path("name") String name);

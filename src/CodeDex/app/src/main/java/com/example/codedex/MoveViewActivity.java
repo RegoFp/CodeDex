@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         moveData = Parcels.unwrap(getIntent().getParcelableExtra("move"));
 
         TextView textView1 = findViewById(R.id.moveDataName);
-        textView1.setText(moveData.getName().toUpperCase());
+        textView1.setText(moveData.getName().toUpperCase().replace("-"," "));
 
         TextView textView2 = findViewById(R.id.moveDataAccuracy);
         textView2.setText(""+moveData.getAccuracy());
@@ -53,11 +54,21 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         TextView textView4 = findViewById(R.id.moveDataPower);
         textView4.setText(""+moveData.getPower());
 
-        TextView textView6 = findViewById(R.id.moveDataDamageClass);
-        textView6.setText(""+moveData.getDamage_class().getName());
 
-        TextView textView7 = findViewById(R.id.moveDataDamageType);
-        textView7.setText(""+moveData.getType().getName());
+        ImageView imageView1 = findViewById(R.id.moveDataDamageType);
+        String type = moveData.getType().getName();
+        String uri = "@drawable/type_"+type;  // where myresource (without the extension) is the file
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        imageView1.setImageDrawable(res);
+
+
+        ImageView imageView2 = findViewById(R.id.moveDataDamageClass);
+        String dmg = moveData.getDamage_class().getName();
+        String uri2 = "@drawable/dmg_"+dmg;  // where myresource (without the extension) is the file
+        int imageResource2 = getResources().getIdentifier(uri2, null, getPackageName());
+        Drawable res2 = getResources().getDrawable(imageResource2);
+        imageView2.setImageDrawable(res2);
 
         SetColor();
 

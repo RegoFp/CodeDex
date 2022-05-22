@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -67,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.mainMenu);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Window window = this.getWindow();
+        //window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
+        }
 
 
         //RecyclerView
@@ -133,17 +142,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
 
-            switch (item.getItemId()) {
-                case R.id.menu_pokemon:
-                    Toast.makeText(this, "sup", Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.menu_moves:
-                    Intent i = new Intent(this, SearchMoveActivity.class);
-                    startActivity(i);
-                    break;
-
-
-            }
+          
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,7 +227,8 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         switch (item.getItemId()) {
 
             case R.id.menu_abilities:
-                //TODO
+                Intent e = new Intent(this, AllAbilitiesViewActivity.class);
+                startActivity(e);
                 break;
 
             case R.id.menu_moves: {
