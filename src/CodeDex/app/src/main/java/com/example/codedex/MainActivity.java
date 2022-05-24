@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
 
-          
+
         }
         return super.onOptionsItemSelected(item);
     }

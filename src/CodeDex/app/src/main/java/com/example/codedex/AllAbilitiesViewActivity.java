@@ -5,14 +5,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.widget.Toast;
 
 import com.example.codedex.models.AbilitiesList;
 import com.example.codedex.models.Ability;
+import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AllAbilities;
 import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.Move;
+import com.example.codedex.models.MoveData;
 import com.example.codedex.pokeapi.PokemonClient;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -24,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AllAbilitiesViewActivity extends AppCompatActivity {
+public class AllAbilitiesViewActivity extends AppCompatActivity implements AbilitiesAdapter.onItemListener {
 
     Retrofit retrofit;
     PokemonClient client;
@@ -42,7 +49,7 @@ public class AllAbilitiesViewActivity extends AppCompatActivity {
 
         startRetrofit();
 
-        abilitiesAdapter = new AbilitiesAdapter(this,null);
+        abilitiesAdapter = new AbilitiesAdapter(this,this);
         recyclerView.setAdapter(abilitiesAdapter);
         recyclerView.setHasFixedSize(true);
 
@@ -103,4 +110,40 @@ public class AllAbilitiesViewActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onItemClick(int position) {
+
+        getAbility(abilitiesLists.get(position).getName());
+
+    }
+
+    private void getAbility(String name) {
+
+        Intent i = new Intent(this, AbilityViewActivity.class);
+
+
+        PokemonClient client = retrofit.create(PokemonClient.class);
+        Call<AbilityData> call = client.getAbilityById(name);
+        call.enqueue(new Callback<AbilityData>() {
+            @Override
+            public void onResponse(Call<AbilityData> call, Response<AbilityData> response) {
+                AbilityData abilityData = response.body();
+                Parcelable wrapped = Parcels.wrap(abilityData);
+                i.putExtra("ability", wrapped);
+                String test = abilityData.getFlavor_text_entries().get(0).getFlavor_text();
+                startActivity(i);
+                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
+            }
+
+            @Override
+            public void onFailure(Call<AbilityData> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
 }

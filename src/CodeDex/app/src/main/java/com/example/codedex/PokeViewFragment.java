@@ -1,18 +1,23 @@
 package com.example.codedex;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
 import com.example.codedex.pokeapi.PokemonClient;
+
+import org.parceler.Parcels;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -27,6 +32,7 @@ public class PokeViewFragment extends Fragment {
 
     PokemonData pokemonData;
     Retrofit retrofit;
+    View root;
 
     public PokeViewFragment(PokemonData pokemonData) {
         this.pokemonData = pokemonData;
@@ -75,7 +81,7 @@ public class PokeViewFragment extends Fragment {
 
         //Get data
         //Get specieData
-        View root = inflater.inflate(R.layout.fragment_poke_view, null);
+        root = inflater.inflate(R.layout.fragment_poke_view, null);
 
         PokemonClient client =  retrofit.create(PokemonClient.class);
 
@@ -116,9 +122,23 @@ public class PokeViewFragment extends Fragment {
             TextView ability1 = root.findViewById(R.id.ability1);
             ability1.setText(pokemonData.getAbilities().get(0).getAbility().getName());
 
+            ability1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getAbility(pokemonData.getAbilities().get(0).getAbility().getName());
+                }
+            });
+
             if(pokemonData.getAbilities().size()>1) {
                 TextView ability2 = root.findViewById(R.id.ability2);
                 ability2.setText(pokemonData.getAbilities().get(1).getAbility().getName());
+
+                ability2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getAbility(pokemonData.getAbilities().get(1).getAbility().getName());
+                    }
+                });
             }
 
         }else{
@@ -133,5 +153,30 @@ public class PokeViewFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void getAbility(String name) {
+
+        Intent i = new Intent(root.getContext(), AbilityViewActivity.class);
+
+
+        PokemonClient client = retrofit.create(PokemonClient.class);
+        Call<AbilityData> call = client.getAbilityById(name);
+        call.enqueue(new Callback<AbilityData>() {
+            @Override
+            public void onResponse(Call<AbilityData> call, Response<AbilityData> response) {
+                AbilityData abilityData = response.body();
+                Parcelable wrapped = Parcels.wrap(abilityData);
+                i.putExtra("ability", wrapped);
+                String test = abilityData.getFlavor_text_entries().get(0).getFlavor_text();
+                startActivity(i);
+                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
+            }
+
+            @Override
+            public void onFailure(Call<AbilityData> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -249,14 +249,21 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
         }
 
+
+        //Coge el color de una de las cards
         int color = cardView.getCardBackgroundColor().getDefaultColor();
 
+        //Separa los valores en rgb
         int red = Color.red(color);
         int  green = Color.green(color);
         int  blue = Color.blue(color);
+
+        //Crea un color en base al rbg añadiendole alpha
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             color = Color.argb(150,red,green,blue);
         }
+
+
 
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.moveDataBackground);
         constraintLayout.setBackgroundColor(color);

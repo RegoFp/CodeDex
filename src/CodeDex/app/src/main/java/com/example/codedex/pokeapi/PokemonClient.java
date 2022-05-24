@@ -1,5 +1,7 @@
 package com.example.codedex.pokeapi;
 
+import com.example.codedex.models.Ability;
+import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AllAbilities;
 import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.MoveData;
@@ -41,6 +43,12 @@ public interface PokemonClient {
     Call<AllAbilities> AllAbilities(
 
     );
+
+
+    //Pokemon por su nº en la pokedex
+    @GET("ability/{id}")
+    Call<AbilityData> getAbilityById(@Path("id") String id);
+
 
 
     @GET("move/{name}")
