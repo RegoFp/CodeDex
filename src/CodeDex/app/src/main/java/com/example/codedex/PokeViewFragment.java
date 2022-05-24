@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.codedex.models.AbilityData;
@@ -118,27 +119,37 @@ public class PokeViewFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
+
         if(pokemonData.getAbilities().size()>0){
             TextView ability1 = root.findViewById(R.id.ability1);
-            ability1.setText(pokemonData.getAbilities().get(0).getAbility().getName());
+
+            String ability1Name = pokemonData.getAbilities().get(0).getAbility().getName();
+
+            ability1.setText(ability1Name.substring(0, 1).toUpperCase() + ability1Name.substring(1).replace("-"," "));
 
             ability1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.bounce));
                     getAbility(pokemonData.getAbilities().get(0).getAbility().getName());
                 }
             });
 
+            TextView ability2 = root.findViewById(R.id.ability2);
             if(pokemonData.getAbilities().size()>1) {
-                TextView ability2 = root.findViewById(R.id.ability2);
-                ability2.setText(pokemonData.getAbilities().get(1).getAbility().getName());
-
+                String abiliy2Name = pokemonData.getAbilities().get(1).getAbility().getName();
+                ability2.setText(abiliy2Name.substring(0, 1).toUpperCase() + abiliy2Name.substring(1).replace("-"," "));
                 ability2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.bounce));
                         getAbility(pokemonData.getAbilities().get(1).getAbility().getName());
                     }
                 });
+            }else{
+
+                ability2.setVisibility(View.GONE);
+
             }
 
         }else{

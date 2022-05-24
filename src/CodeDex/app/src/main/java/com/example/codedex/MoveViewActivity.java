@@ -94,8 +94,6 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
             public void run() {
                 int lineCount = textView8.getLineCount();
                 if(lineCount<5){
-                    int test = textView8.getLineCount();
-                    System.out.println(test);
                     ViewGroup.LayoutParams params = scrollView.getLayoutParams();
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     scrollView.setLayoutParams(params);

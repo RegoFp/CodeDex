@@ -2,6 +2,9 @@ package com.example.codedex.models;
 
 
 
+
+
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;

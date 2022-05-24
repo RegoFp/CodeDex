@@ -6,13 +6,13 @@ import org.parceler.Parcel;
 public class Effect_entries {
 
     private String effect;
-    private Languaje languaje;
+    private Languaje language;
 
     public String getEffect() {
         return effect;
     }
 
     public Languaje getLanguaje() {
-        return languaje;
+        return language;
     }
 }

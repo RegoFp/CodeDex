@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -146,6 +147,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
 
     public void onclickButtons(View root){
 
+
         Button buttonAll = (Button) root.findViewById(R.id.filterEgg);
         buttonAll.setOnClickListener(new View.OnClickListener()
 
@@ -171,6 +173,8 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
                 });
 
                 listMovesAdapter.clearAllData();
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash));
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash2));
                 listMovesAdapter.addMoveItem(filteredMoveList);
                 recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
@@ -204,6 +208,8 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
                 });
 
                 listMovesAdapter.clearAllData();
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash));
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash2));
                 listMovesAdapter.addMoveItem(filteredMoveList);
                 recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
@@ -227,6 +233,8 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
 
                 }
                 listMovesAdapter.clearAllData();
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash));
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash2));
                 listMovesAdapter.addMoveItem(filteredMoveList);
                 recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
@@ -251,6 +259,8 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
 
                 }
                 listMovesAdapter.clearAllData();
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash));
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.flash2));
                 listMovesAdapter.addMoveItem(filteredMoveList);
                 recyclerView.getLayoutManager().scrollToPosition(0);
                 // do something
