@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -13,12 +15,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.example.codedex.models.AbilityData;
+import com.example.codedex.models.ChainLink;
+import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.FlavorText;
+import com.example.codedex.models.MoveList;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -34,6 +41,11 @@ public class PokeViewFragment extends Fragment {
     PokemonData pokemonData;
     Retrofit retrofit;
     View root;
+
+
+    private RecyclerView recyclerView;
+    private ArrayList<ChainLink> chainLinks = new ArrayList<>();
+    private EvolutionChainRootAdapter evolutionChainRootAdapter;
 
     public PokeViewFragment(PokemonData pokemonData) {
         this.pokemonData = pokemonData;
@@ -106,7 +118,7 @@ public class PokeViewFragment extends Fragment {
 
                 }
 
-
+                getEvolutionChain(specieData.getEvolution_chain().getUrl());
 
             }
 
@@ -164,6 +176,43 @@ public class PokeViewFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void getEvolutionChain(String url) {
+        String[] urlSplice = url.split("/");
+        int id = Integer.parseInt(urlSplice[urlSplice.length -1]);
+
+        PokemonClient client = retrofit.create(PokemonClient.class);
+        Call<EvolutionRoot> call = client.getEvolutionChainByID(id);
+        call.enqueue(new Callback<EvolutionRoot>() {
+            @Override
+            public void onResponse(Call<EvolutionRoot> call, Response<EvolutionRoot> response) {
+                EvolutionRoot evolutionRoot = response.body();
+
+                chainLinks = evolutionRoot.getChain().getEvolves_to();
+
+                //RecyclerView
+                recyclerView = (RecyclerView) root.findViewById(R.id.evolutionRecycler);
+
+
+                evolutionChainRootAdapter= new EvolutionChainRootAdapter(root.getContext(),null);
+                recyclerView.setAdapter(evolutionChainRootAdapter);
+                recyclerView.setHasFixedSize(true);
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
+                recyclerView.setLayoutManager(layoutManager);
+
+                evolutionChainRootAdapter.addMoveItem(chainLinks);
+
+            }
+
+            @Override
+            public void onFailure(Call<EvolutionRoot> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
     private void getAbility(String name) {

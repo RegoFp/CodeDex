@@ -4,6 +4,7 @@ import com.example.codedex.models.Ability;
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AllAbilities;
 import com.example.codedex.models.AllMovesList;
+import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
 import com.example.codedex.models.Pokemon;
@@ -49,6 +50,9 @@ public interface PokemonClient {
     @GET("ability/{id}")
     Call<AbilityData> getAbilityById(@Path("id") String id);
 
+    //Pokemon por su nº en la pokedex
+    @GET("evolution-chain/{id}")
+    Call<EvolutionRoot> getEvolutionChainByID(@Path("id") Integer id);
 
 
     @GET("move/{name}")

@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         });
 
         int items = recyclerView.getAdapter().getItemCount();
-        Toast.makeText(this,"hila"+items,Toast.LENGTH_SHORT).show();
 
     }
 
