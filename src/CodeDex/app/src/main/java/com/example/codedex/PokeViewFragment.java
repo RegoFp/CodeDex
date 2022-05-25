@@ -11,7 +11,9 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.codedex.models.AbilityData;
@@ -194,7 +196,7 @@ public class PokeViewFragment extends Fragment {
                 //RecyclerView
                 recyclerView = (RecyclerView) root.findViewById(R.id.evolutionRecycler);
 
-
+                Boolean test = false;
                 evolutionChainRootAdapter= new EvolutionChainRootAdapter(root.getContext(),null);
                 recyclerView.setAdapter(evolutionChainRootAdapter);
                 recyclerView.setHasFixedSize(true);
@@ -202,9 +204,12 @@ public class PokeViewFragment extends Fragment {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
                 recyclerView.setLayoutManager(layoutManager);
 
-                evolutionChainRootAdapter.addMoveItem(chainLinks);
+                evolutionChainRootAdapter.addOneItem(evolutionRoot.getChain());
 
+
+                System.out.println(test);
             }
+
 
             @Override
             public void onFailure(Call<EvolutionRoot> call, Throwable t) {
