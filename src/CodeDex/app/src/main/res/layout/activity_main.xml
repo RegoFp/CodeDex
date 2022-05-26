@@ -30,8 +30,6 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searhBar"
-
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:elevation="100dp"
             android:layout_height="wrap_content"

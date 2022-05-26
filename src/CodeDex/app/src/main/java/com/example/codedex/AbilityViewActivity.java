@@ -5,16 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.codedex.models.AbilityData;
+import com.example.codedex.models.AbilityPokemonList;
 import com.example.codedex.models.Effect_entries;
 import com.example.codedex.models.FlavorText;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 public class AbilityViewActivity extends AppCompatActivity implements AbilityListPokemonAdapter.onItemListener {
 
@@ -88,7 +92,24 @@ public class AbilityViewActivity extends AppCompatActivity implements AbilityLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        abilityListPokemonAdapter.addPokemonItem(abilityData.getPokemon());
+        ArrayList<AbilityPokemonList> pokemonList = abilityData.getPokemon();
+
+        //Removes alternative forms from the list
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pokemonList.removeIf(t -> t.getPokemon().getId()>10000);
+        }else{
+
+            for(int i = 0; i < pokemonList.size(); i++){
+                if(pokemonList.get(i).getPokemon().getId() > 1000){
+                    pokemonList.remove(i);
+                    i--;
+                }
+            }
+
+
+        }
+
+        abilityListPokemonAdapter.addPokemonItem(pokemonList);
 
 
 

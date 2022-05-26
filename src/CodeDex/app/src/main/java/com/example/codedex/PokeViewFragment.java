@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.codedex.models.AbilityData;
@@ -43,7 +44,7 @@ public class PokeViewFragment extends Fragment {
     PokemonData pokemonData;
     Retrofit retrofit;
     View root;
-
+    ProgressBar progressBar;
 
     private RecyclerView recyclerView;
     private ArrayList<ChainLink> chainLinks = new ArrayList<>();
@@ -177,6 +178,8 @@ public class PokeViewFragment extends Fragment {
         weight.setText(pokemonData.getWeight());
 
 
+        progressBar = (ProgressBar) root.findViewById(R.id.evolutionLoading);
+
         return root;
     }
 
@@ -190,6 +193,8 @@ public class PokeViewFragment extends Fragment {
             @Override
             public void onResponse(Call<EvolutionRoot> call, Response<EvolutionRoot> response) {
                 EvolutionRoot evolutionRoot = response.body();
+
+                progressBar.setVisibility(View.GONE);
 
                 chainLinks = evolutionRoot.getChain().getEvolves_to();
 

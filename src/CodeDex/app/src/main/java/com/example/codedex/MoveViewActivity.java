@@ -21,8 +21,11 @@ import android.widget.TextView;
 import com.example.codedex.models.Effect_entries;
 import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.MoveData;
+import com.example.codedex.models.Pokemon;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 public class MoveViewActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener{
 
@@ -120,7 +123,26 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        listPokemonAdapter.addPokemonItem(moveData.getLearned_by_pokemon());
+        ArrayList<Pokemon> pokemons = moveData.getLearned_by_pokemon();
+
+
+        //Remoces alternative forms from the list
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            pokemons.removeIf(t -> t.getId()>300);
+        }else{
+
+            for(int i = 0; i < pokemons.size(); i++){
+                if(pokemons.get(i).getId() > 3000){
+                    pokemons.remove(i);
+                    i--;
+                }
+            }
+
+
+        }
+
+
+        listPokemonAdapter.addPokemonItem(pokemons);
 
 
 

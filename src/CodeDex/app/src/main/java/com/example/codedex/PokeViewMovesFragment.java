@@ -248,7 +248,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getContext(),"test", Toast.LENGTH_LONG).show();
+
 
                 filteredMoveList.clear();
                 for (MoveList ml : Movelist) {

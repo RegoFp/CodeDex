@@ -159,6 +159,21 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
             pokemonList = response.body().getResults();
 
+                //Removes alternative forms from the list
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    pokemonList.removeIf(t -> t.getId()>10000);
+                }else{
+
+                    for(int i = 0; i < pokemonList.size(); i++){
+                        if(pokemonList.get(i).getId() > 1000){
+                            pokemonList.remove(i);
+                            i--;
+                        }
+                    }
+
+
+                }
+
             listPokemonAdapter.addPokemonItem(pokemonList);
 
 
@@ -190,8 +205,6 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
                 List<TypesList> typesList = pokemonData.getTypes();
                 Type type = typesList.get(0).getType();
 
-                //Toast.makeText(getApplicationContext(),bulbasur.getName(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),type.getName(), Toast.LENGTH_LONG).show();
 
 
                 i.putExtra("pokemon", wrapped);
