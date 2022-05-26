@@ -1,6 +1,7 @@
 package com.example.codedex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AllAbilitiesViewActivity extends AppCompatActivity implements AbilitiesAdapter.onItemListener {
+public class AllAbilitiesViewActivity extends AppCompatActivity implements AbilitiesAdapter.onItemListener, SearchView.OnQueryTextListener{
 
     Retrofit retrofit;
     PokemonClient client;
@@ -39,11 +40,15 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
     private RecyclerView recyclerView;
     private AbilitiesAdapter abilitiesAdapter;
     ArrayList<Ability> abilitiesLists;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_abilities_view);
+
+        searchView = (SearchView) findViewById(R.id.AllAbilitiesSearch);
+        searchView.setOnQueryTextListener(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.AllAbilitiesRecycler);
 
@@ -113,8 +118,8 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
 
     @Override
     public void onItemClick(int position) {
-
-        getAbility(abilitiesLists.get(position).getName());
+        Ability a = abilitiesAdapter.getCurrentList().get(position);
+        getAbility(a.getName());
 
     }
 
@@ -146,4 +151,14 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
 
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        abilitiesAdapter.filtderData(newText);
+        return false;
+    }
 }

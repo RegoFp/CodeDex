@@ -244,6 +244,12 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
                 cardView3.setCardBackgroundColor(getResources().getColor(R.color.Water));
                 cardView4.setCardBackgroundColor(getResources().getColor(R.color.Water));
                 break;
+            case "shadow":
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.Shadow));
+                cardView2.setCardBackgroundColor(getResources().getColor(R.color.Shadow));
+                cardView3.setCardBackgroundColor(getResources().getColor(R.color.Shadow));
+                cardView4.setCardBackgroundColor(getResources().getColor(R.color.Shadow));
+                break;
 
         }
 

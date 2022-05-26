@@ -19,6 +19,8 @@ import com.example.codedex.models.MoveData;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,6 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AbilitiesAdapter extends RecyclerView.Adapter<AbilitiesAdapter.ViewHolder> {
 
     private ArrayList<Ability> dataset;
+    private ArrayList<Ability> datasetOriginal;
     private Context context;
     private onItemListener onItemListener;
     private Retrofit retrofit;
@@ -38,6 +41,7 @@ public class AbilitiesAdapter extends RecyclerView.Adapter<AbilitiesAdapter.View
     public AbilitiesAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset= new ArrayList<>();
+        datasetOriginal=new ArrayList<>();
         this.onItemListener = onItemListener;
 
         // this.mOnItemListener = onItemListener;
@@ -76,8 +80,42 @@ public class AbilitiesAdapter extends RecyclerView.Adapter<AbilitiesAdapter.View
 
     public void addMoveItem(ArrayList<Ability> abilities) {
         dataset.addAll(abilities);
+        datasetOriginal.addAll(abilities);
         notifyDataSetChanged();
 
+    }
+
+    public ArrayList<Ability> getCurrentList(){
+        return dataset;
+    }
+
+    public void filtderData(String search){
+        if (search.length()==0){
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+        }else{
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                List<Ability> collection = dataset.stream()
+                        .filter(i -> i.getName().toLowerCase().contains(search.replace(' ','-').toLowerCase()))
+                        .collect(Collectors.toList());
+
+                dataset.clear();
+                dataset.addAll(collection);
+            }else{
+                for (Ability a: datasetOriginal){
+                    if(a.getName().toLowerCase().contains(search.toLowerCase())){
+                        dataset.add(a);
+                    }
+
+                }
+
+            }
+
+        }
+
+        notifyDataSetChanged();
     }
 
     public  void  clearAllData(){

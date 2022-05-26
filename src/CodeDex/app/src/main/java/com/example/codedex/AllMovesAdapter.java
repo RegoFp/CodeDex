@@ -17,6 +17,8 @@ import com.example.codedex.models.MoveList;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHolder> {
 
     private ArrayList<Move> dataset;
+    private ArrayList<Move> datasetOriginal;
     private Context context;
     private onItemListener onItemListener;
     private Retrofit retrofit;
@@ -36,6 +39,7 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
     public AllMovesAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset= new ArrayList<>();
+        datasetOriginal=new ArrayList<>();
         this.onItemListener = onItemListener;
 
         // this.mOnItemListener = onItemListener;
@@ -59,8 +63,6 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
         holder.moveName.setText(name.substring(0, 1).toUpperCase() + name.substring(1).replace("-"," "));
         holder.movePP.setVisibility(View.GONE);
         holder.movePower.setVisibility(View.GONE);
-
-
 
 
 
@@ -111,10 +113,45 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
         return dataset.size();
     }
 
+    public ArrayList<Move> getCurrentList(){
+
+        return dataset;
+    }
+
     public void addMoveItem(ArrayList<Move> MoveList) {
         dataset.addAll(MoveList);
+        datasetOriginal.addAll(MoveList);
         notifyDataSetChanged();
 
+    }
+
+    public void filtderData(String search){
+        if (search.length()==0){
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+        }else{
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                List<Move> collection = dataset.stream()
+                        .filter(i -> i.getName().toLowerCase().contains(search.replace(' ','-').toLowerCase()))
+                        .collect(Collectors.toList());
+
+                dataset.clear();
+                dataset.addAll(collection);
+            }else{
+                for (Move m: datasetOriginal){
+                    if(m.getName().toLowerCase().contains(search.toLowerCase())){
+                        dataset.add(m);
+                    }
+
+                }
+
+            }
+
+        }
+
+        notifyDataSetChanged();
     }
 
     public  void  clearAllData(){

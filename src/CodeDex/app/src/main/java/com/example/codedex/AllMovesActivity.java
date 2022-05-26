@@ -1,6 +1,7 @@
 package com.example.codedex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapter.onItemListener{
+public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapter.onItemListener, SearchView.OnQueryTextListener{
 
     Retrofit retrofit;
     PokemonClient client;
@@ -38,7 +39,7 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
     private RecyclerView recyclerView;
     private AllMovesAdapter listMovesAdapter;
     ArrayList<Move> moveLists;
-
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,6 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
         setContentView(R.layout.activity_all_moves);
 
         startRetrofit();
-
 
         getSupportActionBar().hide();
         Window window = this.getWindow();
@@ -56,6 +56,10 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
         }
+
+        searchView = (SearchView) findViewById(R.id.allMovesSearch);
+        searchView.setOnQueryTextListener(this);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.allMovesRecycler);
 
@@ -77,10 +81,6 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
                 moveLists = response.body().getResults();
                 listMovesAdapter.addMoveItem(moveLists);
                 //RecyclerView
-
-
-
-
 
 
             }
@@ -127,7 +127,7 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
 
     @Override
     public void onItemClick(int position) {
-        Move m = moveLists.get(position);
+        Move m = listMovesAdapter.getCurrentList().get(position);
         String moveName = m.getName();
         getMove(moveName);
 
@@ -162,6 +162,14 @@ public class AllMovesActivity extends AppCompatActivity implements AllMovesAdapt
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
-
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        listMovesAdapter.filtderData(newText);
+        return false;
+    }
 }
