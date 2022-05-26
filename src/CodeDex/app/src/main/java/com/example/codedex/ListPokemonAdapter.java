@@ -174,7 +174,6 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
             onItemListener.onItemClick(getAdapterPosition());
 
             //TODO No reconoce bien cual esta siendo clicado
-            v.startAnimation(animation);
         }
     }
 

@@ -21,7 +21,7 @@ import retrofit2.http.Path;
 public interface PokemonClient {
 
     //Lista de todos los pokemons
-    @GET("pokemon?limit=898&offset=0")
+    @GET("pokemon?limit=10000&offset=0")
     Call<PokemonList> pokemons(
 
     );
