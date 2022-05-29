@@ -7,11 +7,15 @@ import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
+import com.example.codedex.models.NatureData;
+import com.example.codedex.models.NatureResults;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.PokemonList;
 import com.example.codedex.models.SpecieData;
+import com.example.codedex.models.Type;
 import com.example.codedex.models.TypeData;
+import com.example.codedex.models.TypeResults;
 
 import java.util.List;
 
@@ -56,4 +60,15 @@ public interface PokemonClient {
 
     @GET("type/{id}")
     Call<TypeData> getType(@Path("id") String id);
+
+    //Receives all types
+    @GET("type/")
+    Call<TypeResults> getAllTypes();
+
+    //Receives all Natures
+    @GET("nature/")
+    Call<NatureResults> getAllNatures();
+
+    @GET("nature/{id}")
+    Call<NatureData> getNature(@Path("id") String id);
 }

@@ -10,4 +10,12 @@
         android:id="@+id/menu_abilities"
         android:title="Abilities" />
 
+    <item
+        android:id="@+id/menu_types"
+        android:title="Types" />
+
+    <item
+        android:id="@+id/menu_Natures"
+        android:title="Natures" />
+
 </menu>

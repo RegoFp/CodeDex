@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     private SearchView searchView;
 
     private ArrayList<Pokemon> pokemonList = new ArrayList<>();
-
+    private RetrofitInstance retrofitInstance;
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
 
         final Animation animation = AnimationUtils.loadAnimation(this,R.anim.bounce);
 
@@ -248,6 +252,16 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
             case R.id.menu_moves: {
                 Intent i = new Intent(this, AllMovesActivity.class);
                 startActivity(i);
+                break;
+            }
+
+            case R.id.menu_types: {
+                retrofitInstance.getAllType(this);
+                break;
+            }
+
+            case R.id.menu_Natures: {
+                retrofitInstance.getAllNatures(this);
                 break;
             }
         }

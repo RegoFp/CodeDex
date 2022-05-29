@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CodeDex">
         <activity
+            android:name=".AllNaturesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AllTypesViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".TypeViewActivity"
             android:exported="false" />
         <activity

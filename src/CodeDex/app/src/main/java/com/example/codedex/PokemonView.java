@@ -69,6 +69,9 @@ public class PokemonView extends AppCompatActivity {
         Intent intent = getIntent();
         pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+
         getSupportActionBar().hide();
         Window window = this.getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
@@ -84,7 +87,7 @@ public class PokemonView extends AppCompatActivity {
         ConstraintLayout topLayer = (ConstraintLayout) findViewById(R.id.topLayer);
         topLayer.setBackgroundResource(R.color.pokeRed);
 
-        startRetrofit();
+
 
         TextView tv1 = (TextView)findViewById(R.id.pokeName);
         String name = pokemonData.getName();
@@ -102,7 +105,7 @@ public class PokemonView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.startAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce));
-                getType(String.valueOf(pokemonData.getTypes().get(0).getType().getId()));
+                retrofitInstance.getType(getApplicationContext(),String.valueOf(pokemonData.getTypes().get(0).getType().getId()));
             }
         });
 
@@ -115,7 +118,7 @@ public class PokemonView extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     v.startAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce));
-                    getType(pokemonData.getTypes().get(1).getType().getName());
+                    retrofitInstance.getType(getApplicationContext(),pokemonData.getTypes().get(1).getType().getName());
                 }
             });
 
@@ -215,56 +218,7 @@ public class PokemonView extends AppCompatActivity {
         }
     }
 
-    private void startRetrofit() {
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-    }
-
-    private void getType(String id){
-        Intent i = new Intent(this, TypeViewActivity.class);
-        PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<TypeData> call = client.getType(id);
-        call.enqueue(new Callback<TypeData>() {
-            @Override
-            public void onResponse(Call<TypeData> call, Response<TypeData> response) {
-                TypeData typeData = response.body();
-                Parcelable wrapped = Parcels.wrap(typeData);
-                i.putExtra("type", wrapped);
-                startActivity(i);
-
-            }
-
-            @Override
-            public void onFailure(Call<TypeData> call, Throwable t) {
-
-            }
-        });
-
-
-
-    }
 
 }
 

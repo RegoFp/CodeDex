@@ -14,19 +14,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="10dp"
-            android:layout_height="60dp">
 
             <ImageView
                 android:id="@+id/parentType"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="70dp"
                 android:src="@drawable/type_"/>
 
-        </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView

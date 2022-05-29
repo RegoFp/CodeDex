@@ -1,4 +1,4 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -8,31 +8,18 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.codedex.models.Pokemon;
-import com.example.codedex.models.PokemonData;
+import com.example.codedex.R;
 import com.example.codedex.models.Type;
-import com.example.codedex.models.TypeData;
-import com.example.codedex.pokeapi.PokemonClient;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ListTypeRelationsAdapter extends RecyclerView.Adapter<ListTypeRelationsAdapter.ViewHolder>{
+public class AllTypesAdapter extends RecyclerView.Adapter<AllTypesAdapter.ViewHolder>{
 
     private ArrayList<Type> dataset;
     private Context context;
@@ -43,7 +30,7 @@ public class ListTypeRelationsAdapter extends RecyclerView.Adapter<ListTypeRelat
     //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
 
-    public ListTypeRelationsAdapter(Context context, onItemListener onItemListener){
+    public AllTypesAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset=new ArrayList<>();
         this.mOnItemListener = onItemListener;
@@ -53,7 +40,7 @@ public class ListTypeRelationsAdapter extends RecyclerView.Adapter<ListTypeRelat
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.bounce);
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type_relation,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_all_type,parent,false);
         return new ViewHolder(view, mOnItemListener);
     }
 
