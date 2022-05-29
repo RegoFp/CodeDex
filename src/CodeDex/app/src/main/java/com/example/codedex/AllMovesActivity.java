@@ -6,17 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.View;
 import android.view.Window;
 
+import com.example.codedex.adapters.AllMovesAdapter;
 import com.example.codedex.models.AllMovesList;
 import com.example.codedex.models.Move;
 import com.example.codedex.models.MoveData;
-import com.example.codedex.models.MoveList;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;

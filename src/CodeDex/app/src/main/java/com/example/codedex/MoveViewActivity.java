@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.codedex.models.Effect_entries;
+import com.example.codedex.adapters.ListPokemonAdapter;
 import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.Pokemon;

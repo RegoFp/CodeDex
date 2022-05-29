@@ -1,22 +1,16 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.codedex.models.AbilitiesList;
+import com.example.codedex.R;
 import com.example.codedex.models.Ability;
-import com.example.codedex.models.AllAbilities;
-import com.example.codedex.models.Move;
-import com.example.codedex.models.MoveData;
-import com.example.codedex.pokeapi.PokemonClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +18,6 @@ import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

@@ -3,13 +3,21 @@ package com.example.codedex;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.widget.Toast;
 
+import com.example.codedex.models.AbilityData;
+import com.example.codedex.models.MoveData;
 import com.example.codedex.models.NatureResults;
+import com.example.codedex.models.PokemonData;
+import com.example.codedex.models.Type;
 import com.example.codedex.models.TypeData;
 import com.example.codedex.models.TypeResults;
+import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -98,7 +106,6 @@ public class RetrofitInstance {
         });
     }
 
-
     public void getAllNatures(Context context){
         Intent i = new Intent(context, AllNaturesActivity.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -117,6 +124,91 @@ public class RetrofitInstance {
             public void onFailure(Call<NatureResults> call, Throwable t) {
             }
         });
+    }
+
+    public void getPokemon(Context context, String id){
+        Intent i = new Intent(context, PokemonView.class);
+        PokemonClient client =  retrofit.create(PokemonClient.class);
+        Call<PokemonData> call = client.getPokemonById(id);
+        call.enqueue(new Callback<PokemonData>() {
+            @Override
+            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
+                PokemonData pokemonData = response.body();
+                Parcelable wrapped = Parcels.wrap(pokemonData);
+                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
+
+
+                List<TypesList> typesList = pokemonData.getTypes();
+                Type type = typesList.get(0).getType();
+                i.putExtra("pokemon", wrapped);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<PokemonData> call, Throwable t) {
+                Toast.makeText(context,"ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void getAbility(Context context, String name) {
+
+        Intent i = new Intent(context, AbilityViewActivity.class);
+
+
+        PokemonClient client = retrofit.create(PokemonClient.class);
+        Call<AbilityData> call = client.getAbilityById(name);
+        call.enqueue(new Callback<AbilityData>() {
+            @Override
+            public void onResponse(Call<AbilityData> call, Response<AbilityData> response) {
+                AbilityData abilityData = response.body();
+                Parcelable wrapped = Parcels.wrap(abilityData);
+                i.putExtra("ability", wrapped);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                String test = abilityData.getFlavor_text_entries().get(0).getFlavor_text();
+                context.startActivity(i);
+
+            }
+
+            @Override
+            public void onFailure(Call<AbilityData> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getMove(Context context, String name) {
+
+        Intent i = new Intent(context, MoveViewActivity.class);
+
+
+        PokemonClient client = retrofit.create(PokemonClient.class);
+        Call<MoveData> call = client.getMoveData(name);
+        call.enqueue(new Callback<MoveData>() {
+            @Override
+            public void onResponse(Call<MoveData> call, Response<MoveData> response) {
+                MoveData moveData = response.body();
+                Parcelable wrapped = Parcels.wrap(moveData);
+                i.putExtra("move", wrapped);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
+            }
+
+            @Override
+            public void onFailure(Call<MoveData> call, Throwable t) {
+
+            }
+        });
+
+
+
     }
 
 

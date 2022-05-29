@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.codedex.adapters.AbilityListPokemonAdapter;
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AbilityPokemonList;
 import com.example.codedex.models.Effect_entries;

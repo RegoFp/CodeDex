@@ -11,19 +11,16 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.codedex.adapters.EvolutionChainRootAdapter;
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.ChainLink;
 import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.FlavorText;
-import com.example.codedex.models.MoveList;
-import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
 import com.example.codedex.models.Type;
@@ -74,40 +71,19 @@ public class PokeViewFragment extends Fragment   {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //Get Extra Data
 
-        //Start retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-        //Get data
-        //Get specieData
+        // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_poke_view, null);
 
+        //Start retrofit
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+        retrofit = retrofitInstance.retrofit;
+
+
+        //Get SpecieData
         PokemonClient client =  retrofit.create(PokemonClient.class);
-
         Call<SpecieData> call = client.getSpecieById(pokemonData.getId());
-
         call.enqueue(new Callback<SpecieData>() {
             @Override
             public void onResponse(Call<SpecieData> call, Response<SpecieData> response) {
@@ -136,10 +112,8 @@ public class PokeViewFragment extends Fragment   {
             }
         });
 
-        // Inflate the layout for this fragment
 
-
-
+        //  Show the abilities if the pokemon has some
         if(pokemonData.getAbilities().size()>0){
             TextView ability1 = root.findViewById(R.id.ability1);
 
@@ -151,7 +125,7 @@ public class PokeViewFragment extends Fragment   {
                 @Override
                 public void onClick(View v) {
                     v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.bounce));
-                    getAbility(pokemonData.getAbilities().get(0).getAbility().getName());
+                    retrofitInstance.getAbility(getContext(),pokemonData.getAbilities().get(0).getAbility().getName());
                 }
             });
 
@@ -163,7 +137,7 @@ public class PokeViewFragment extends Fragment   {
                     @Override
                     public void onClick(View v) {
                         v.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.bounce));
-                        getAbility(pokemonData.getAbilities().get(1).getAbility().getName());
+                        retrofitInstance.getAbility(getContext(),pokemonData.getAbilities().get(1).getAbility().getName());
                     }
                 });
             }else{
@@ -172,14 +146,14 @@ public class PokeViewFragment extends Fragment   {
 
             }
 
-        }else{
-
         }
 
+        //Set height
         TextView height = root.findViewById(R.id.detailHeight);
         Double heightm = Double.valueOf(pokemonData.getHeight())/10;
         height.setText(heightm + " m");
 
+        //Set weight
         TextView weight = root.findViewById(R.id.detailWeight);
         Double weightKg = Double.valueOf(pokemonData.getWeight())/10;
         weight.setText(weightKg+ " Kg");
@@ -194,6 +168,8 @@ public class PokeViewFragment extends Fragment   {
         String[] urlSplice = url.split("/");
         int id = Integer.parseInt(urlSplice[urlSplice.length -1]);
 
+
+        //Get evolutionChain
         PokemonClient client = retrofit.create(PokemonClient.class);
         Call<EvolutionRoot> call = client.getEvolutionChainByID(id);
         call.enqueue(new Callback<EvolutionRoot>() {
@@ -237,63 +213,6 @@ public class PokeViewFragment extends Fragment   {
 
     }
 
-    private void getAbility(String name) {
-
-        Intent i = new Intent(root.getContext(), AbilityViewActivity.class);
 
 
-        PokemonClient client = retrofit.create(PokemonClient.class);
-        Call<AbilityData> call = client.getAbilityById(name);
-        call.enqueue(new Callback<AbilityData>() {
-            @Override
-            public void onResponse(Call<AbilityData> call, Response<AbilityData> response) {
-                AbilityData abilityData = response.body();
-                Parcelable wrapped = Parcels.wrap(abilityData);
-                i.putExtra("ability", wrapped);
-                String test = abilityData.getFlavor_text_entries().get(0).getFlavor_text();
-                startActivity(i);
-                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
-            }
-
-            @Override
-            public void onFailure(Call<AbilityData> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    private void getPokemon(String id){
-        Intent i = new Intent(root.getContext(), PokemonView.class);
-        PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<PokemonData> call = client.getPokemonById(id);
-        call.enqueue(new Callback<PokemonData>() {
-            @Override
-            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
-                PokemonData pokemonData = response.body();
-                Parcelable wrapped = Parcels.wrap(pokemonData);
-                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
-
-
-                List<TypesList> typesList = pokemonData.getTypes();
-                Type type = typesList.get(0).getType();
-
-
-
-                i.putExtra("pokemon", wrapped);
-
-                startActivity(i);
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<PokemonData> call, Throwable t) {
-                Toast.makeText(root.getContext(),"ERROR", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
 }

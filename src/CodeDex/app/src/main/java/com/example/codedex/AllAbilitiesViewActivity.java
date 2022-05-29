@@ -3,21 +3,16 @@ package com.example.codedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.widget.Toast;
 
-import com.example.codedex.models.AbilitiesList;
+import com.example.codedex.adapters.AbilitiesAdapter;
 import com.example.codedex.models.Ability;
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AllAbilities;
-import com.example.codedex.models.AllMovesList;
-import com.example.codedex.models.Move;
-import com.example.codedex.models.MoveData;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;

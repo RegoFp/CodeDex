@@ -1,4 +1,4 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,11 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.codedex.PokemonView;
+import com.example.codedex.R;
 import com.example.codedex.models.ChainLink;
-import com.example.codedex.models.EvolutionRoot;
-import com.example.codedex.models.MoveData;
-import com.example.codedex.models.MoveList;
-import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.Type;
 import com.example.codedex.models.TypesList;

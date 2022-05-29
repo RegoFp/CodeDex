@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
 
+import com.example.codedex.adapters.ListMovesAdapter;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -41,11 +41,9 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
     private ArrayList<MoveList> filteredMoveList = new ArrayList<>();
     View root;
     private ListMovesAdapter listMovesAdapter;
-    Retrofit retrofit;
+    private RetrofitInstance retrofitInstance;
 
     public PokeViewMovesFragment(ArrayList<MoveList> moveList) {
-
-
         Movelist = moveList;
 
         //Ordena la lista por nivel en el que se aprende
@@ -62,8 +60,6 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         if (getArguments() != null) {
 
         }
@@ -72,14 +68,12 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_poke_view_moves, null);
 
-        //RecyclerView
+        //Sets up RecyclerView
         recyclerView = (RecyclerView) root.findViewById(R.id.movesList);
-
-
         listMovesAdapter = new ListMovesAdapter(root.getContext(),this);
         recyclerView.setAdapter(listMovesAdapter);
         recyclerView.setHasFixedSize(true);
@@ -87,6 +81,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
         LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        //filter data to only show moves you obtain by level
         filteredMoveList.clear();
         for (MoveList ml : Movelist) {
             if(ml.getVersion_group_details().get(0).getMove_learn_method().getName().equalsIgnoreCase("Level-up")){
@@ -110,47 +105,23 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
         onclickButtons(root);
 
 
-        //Configures retrofit
-        startRetrofit();
+        //Starts retrofit
+        retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
 
 
 
         return root;
     }
 
-    private void startRetrofit() {
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-    }
 
     public void onclickButtons(View root){
 
 
+        //Button EGG
         Button buttonAll = (Button) root.findViewById(R.id.filterEgg);
         buttonAll.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View v)
@@ -182,7 +153,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
         });
 
 
-        //Boton Level
+        //Button LEVEL
         Button buttonLevel = (Button) root.findViewById(R.id.filterLevel);
         buttonLevel.setOnClickListener(new View.OnClickListener()
         {
@@ -216,6 +187,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
             }
         });
 
+        //Button TM
         Button buttonMachine = (Button) root.findViewById(R.id.filterMachine);
         buttonMachine.setOnClickListener(new View.OnClickListener()
         {
@@ -241,7 +213,7 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
             }
         });
 
-        //Boton tutor
+        //Button Tutor
         Button buttonTutor = (Button) root.findViewById(R.id.filterTutor);
         buttonTutor.setOnClickListener(new View.OnClickListener()
         {
@@ -274,38 +246,12 @@ public class PokeViewMovesFragment extends Fragment implements ListMovesAdapter.
     public void onItemClick(int position) {
         MoveList ml = filteredMoveList.get(position);
         String moveName = ml.getMove().getName();
-        getMove(moveName);
+        retrofitInstance.getMove(getContext(),moveName);
 
 
     }
 
-    public void getMove(String name) {
 
-        Intent i = new Intent(root.getContext(), MoveViewActivity.class);
-
-
-        PokemonClient client = retrofit.create(PokemonClient.class);
-        Call<MoveData> call = client.getMoveData(name);
-        call.enqueue(new Callback<MoveData>() {
-            @Override
-            public void onResponse(Call<MoveData> call, Response<MoveData> response) {
-                MoveData moveData = response.body();
-                Parcelable wrapped = Parcels.wrap(moveData);
-                i.putExtra("move", wrapped);
-
-                startActivity(i);
-                //getActivity().overridePendingTransition(R.anim.slide_up,R.anim.nothing);
-            }
-
-            @Override
-            public void onFailure(Call<MoveData> call, Throwable t) {
-
-            }
-        });
-
-
-
-    }
 
 
 }

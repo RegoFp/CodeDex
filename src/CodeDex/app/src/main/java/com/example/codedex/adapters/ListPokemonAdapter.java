@@ -1,9 +1,7 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,27 +9,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.codedex.models.Ability;
-import com.example.codedex.models.MoveData;
+import com.example.codedex.R;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
-import com.example.codedex.models.Type;
-import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
-
-import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;

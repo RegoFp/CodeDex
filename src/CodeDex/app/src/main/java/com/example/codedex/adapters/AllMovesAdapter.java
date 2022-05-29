@@ -1,4 +1,4 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.codedex.R;
 import com.example.codedex.models.Move;
 import com.example.codedex.models.MoveData;
-import com.example.codedex.models.MoveList;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import java.util.ArrayList;

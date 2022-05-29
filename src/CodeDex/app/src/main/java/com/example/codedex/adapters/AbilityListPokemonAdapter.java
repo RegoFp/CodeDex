@@ -1,4 +1,4 @@
-package com.example.codedex;
+package com.example.codedex.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.codedex.R;
 import com.example.codedex.models.AbilityPokemonList;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
