@@ -128,6 +128,9 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
         return dataset.size();
     }
 
+    public ArrayList<AbilityPokemonList> getList(){
+        return dataset;
+    }
 
     public void addPokemonItem(ArrayList<AbilityPokemonList> pokemonList) {
         dataset.addAll(pokemonList);
@@ -162,8 +165,6 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
         public void onClick(View v) {
             onItemListener.onItemClick(getAdapterPosition());
 
-            //TODO No reconoce bien cual esta siendo clicado
-            v.startAnimation(animation);
         }
     }
 

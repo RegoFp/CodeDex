@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginTop="7dp"
         android:background="@color/pokeRed"
         app:cardCornerRadius="10dp"

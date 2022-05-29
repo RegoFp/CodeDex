@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -30,6 +31,9 @@ import com.bumptech.glide.Glide;
 import com.example.codedex.models.MoveList;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
+import com.example.codedex.models.Type;
+import com.example.codedex.models.TypeData;
+import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -39,6 +43,7 @@ import org.parceler.Parcels;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -79,6 +84,8 @@ public class PokemonView extends AppCompatActivity {
         ConstraintLayout topLayer = (ConstraintLayout) findViewById(R.id.topLayer);
         topLayer.setBackgroundResource(R.color.pokeRed);
 
+        startRetrofit();
+
         TextView tv1 = (TextView)findViewById(R.id.pokeName);
         String name = pokemonData.getName();
         tv1.setText(name.substring(0, 1).toUpperCase() + name.substring(1));
@@ -91,11 +98,27 @@ public class PokemonView extends AppCompatActivity {
 
         typeSelector(ivType1,pokemonData.getTypes().get(0).getType().getName());
 
+        ivType1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce));
+                getType(String.valueOf(pokemonData.getTypes().get(0).getType().getId()));
+            }
+        });
+
         ImageView ivType2 = (ImageView) findViewById(R.id.pokeType2);
         if(pokemonData.getTypes().size()>1){
 
             ivType2.setVisibility(View.VISIBLE);
             typeSelector(ivType2,pokemonData.getTypes().get(1).getType().getName());
+            ivType2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.startAnimation(AnimationUtils.loadAnimation(v.getContext(), R.anim.bounce));
+                    getType(pokemonData.getTypes().get(1).getType().getName());
+                }
+            });
+
 
         }else{
             ivType2.setVisibility(View.GONE);
@@ -191,6 +214,58 @@ public class PokemonView extends AppCompatActivity {
             return 2;
         }
     }
+
+    private void startRetrofit() {
+        //Iniciar Retrofit
+        String API_BASE_URL = "https://pokeapi.co/api/v2/";
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        Retrofit.Builder builder =
+                new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .addConverterFactory(
+                                GsonConverterFactory.create()
+                        );
+
+        retrofit =
+                builder
+                        .client(
+                                httpClient.build()
+                        )
+                        .build();
+
+
+    }
+
+    private void getType(String id){
+        Intent i = new Intent(this, TypeViewActivity.class);
+        PokemonClient client =  retrofit.create(PokemonClient.class);
+        Call<TypeData> call = client.getType(id);
+        call.enqueue(new Callback<TypeData>() {
+            @Override
+            public void onResponse(Call<TypeData> call, Response<TypeData> response) {
+                TypeData typeData = response.body();
+                Parcelable wrapped = Parcels.wrap(typeData);
+                i.putExtra("type", wrapped);
+                startActivity(i);
+
+            }
+
+            @Override
+            public void onFailure(Call<TypeData> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
 }
 
 

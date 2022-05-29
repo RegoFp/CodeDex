@@ -1,14 +1,17 @@
 package com.example.codedex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +22,19 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.codedex.models.ChainLink;
+import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.MoveList;
+import com.example.codedex.models.Pokemon;
+import com.example.codedex.models.PokemonData;
+import com.example.codedex.models.Type;
+import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -33,11 +44,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionChainRootAdapter.ViewHolder> {
+public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionChainRootAdapter.ViewHolder>{
 
     private ArrayList<ChainLink> dataset;
     private Context context;
-    private onItemListener onItemListener;
+    public static onItemListener onItemListener;
     private Retrofit retrofit;
 
 
@@ -50,12 +61,13 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
     }
 
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_evolution_chain,parent,false);
-
+        startRetrofit();
         return new ViewHolder(view, onItemListener);
     }
 
@@ -100,6 +112,10 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
         return dataset.size();
     }
 
+    public ArrayList<ChainLink> getCurrentList(){
+        return dataset;
+    }
+
     public void addMoveItem(ArrayList<ChainLink> MoveList) {
         dataset.addAll(MoveList);
         notifyDataSetChanged();
@@ -135,7 +151,12 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
             RecyclerView recyclerView = (RecyclerView) itemView.findViewById(R.id.evolution_pokemon_son);
 
 
-            evolutionChainRootAdapter= new EvolutionChainRootAdapter(itemView.getContext(),null);
+            evolutionChainRootAdapter= new EvolutionChainRootAdapter(context, EvolutionChainRootAdapter.onItemListener = new onItemListener() {
+                @Override
+                public void onItemClick(int position) {
+                   // Toast.makeText(context,evolutionChainRootAdapter.getCurrentList().get(position).getSpecies().getName(),Toast.LENGTH_SHORT).show();
+                }
+            });
             recyclerView.setAdapter(evolutionChainRootAdapter);
             recyclerView.setHasFixedSize(true);
 
@@ -211,7 +232,69 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
     }
 
 
+    private void getPokemon(String id){
+        Intent i = new Intent(context, PokemonView.class);
+        PokemonClient client =  retrofit.create(PokemonClient.class);
+        Call<PokemonData> call = client.getPokemonById(id);
+        call.enqueue(new Callback<PokemonData>() {
+            @Override
+            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
+                PokemonData pokemonData = response.body();
+                Parcelable wrapped = Parcels.wrap(pokemonData);
+                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
 
+
+                List<TypesList> typesList = pokemonData.getTypes();
+                Type type = typesList.get(0).getType();
+
+
+
+                i.putExtra("pokemon", wrapped);
+
+                context.startActivity(i);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<PokemonData> call, Throwable t) {
+                Toast.makeText(context,"ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+
+    private void startRetrofit(){
+        //Iniciar Retrofit
+        String API_BASE_URL = "https://pokeapi.co/api/v2/";
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        Retrofit.Builder builder =
+                new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .addConverterFactory(
+                                GsonConverterFactory.create()
+                        );
+
+        retrofit =
+                builder
+                        .client(
+                                httpClient.build()
+                        )
+                        .build();
+
+
+
+
+    }
 
 }
 

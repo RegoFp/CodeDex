@@ -13,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.codedex.models.Ability;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
@@ -43,6 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.ViewHolder>{
 
     private ArrayList<Pokemon> dataset;
+    private ArrayList<Pokemon> datasetOriginal;
     private Context context;
     private onItemListener mOnItemListener;
     private Animation animation;
@@ -54,6 +57,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     public ListPokemonAdapter(Context context, onItemListener onItemListener){
         this.context = context;
         dataset=new ArrayList<>();
+        datasetOriginal=new ArrayList<>();
         this.mOnItemListener = onItemListener;
     }
 
@@ -71,6 +75,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Pokemon pokemon = dataset.get(position);
         String name = pokemon.getName();
+        holder.ivType1.setImageResource(R.drawable.type_);
         holder.pokeName.setText(name.substring(0, 1).toUpperCase() + name.substring(1).replace("-"," "));
 
         if(pokemon.getId()>10000){
@@ -140,8 +145,42 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     }
 
 
+    public ArrayList<Pokemon> getCurrentList(){
+        return dataset;
+    }
+
+    public void filtderData(String search){
+        if (search.length()==0){
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+        }else{
+            dataset.clear();
+            dataset.addAll(datasetOriginal);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                List<Pokemon> collection = dataset.stream()
+                        .filter(i -> i.getName().toLowerCase().contains(search.replace(' ','-').toLowerCase()))
+                        .collect(Collectors.toList());
+
+                dataset.clear();
+                dataset.addAll(collection);
+            }else{
+                for (Pokemon a: datasetOriginal){
+                    if(a.getName().toLowerCase().contains(search.toLowerCase())){
+                        dataset.add(a);
+                    }
+
+                }
+
+            }
+
+        }
+
+        notifyDataSetChanged();
+    }
+
     public void addPokemonItem(ArrayList<Pokemon> pokemonList) {
         dataset.addAll(pokemonList);
+        datasetOriginal.addAll(pokemonList);
         notifyDataSetChanged();
 
     }

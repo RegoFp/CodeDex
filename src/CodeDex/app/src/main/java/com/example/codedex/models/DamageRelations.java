@@ -1,25 +1,43 @@
 package com.example.codedex.models;
 
-import com.example.codedex.models.damageRelations.DoubleDamageFrom;
-import com.example.codedex.models.damageRelations.DoubleDamageTo;
-import com.example.codedex.models.damageRelations.HalfDamageFrom;
-import com.example.codedex.models.damageRelations.HalfDamageTo;
-import com.example.codedex.models.damageRelations.NoDamageFrom;
-import com.example.codedex.models.damageRelations.NoDamageTo;
+
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
 public class DamageRelations {
 
-    List<DoubleDamageFrom> double_damage_from;
-    List<DoubleDamageTo> double_damage_to;
-    List<HalfDamageFrom> half_damage_from;
-    List<HalfDamageTo> half_damage_to;
-    List<NoDamageFrom> no_damage_from;
-    List<NoDamageTo> no_damage_to;
+    ArrayList<Type> double_damage_from;
+    ArrayList<Type> double_damage_to;
+    ArrayList<Type> half_damage_from;
+    ArrayList<Type> half_damage_to;
+    ArrayList<Type> no_damage_from;
+    ArrayList<Type> no_damage_to;
 
+    public ArrayList<Type> getDouble_damage_from() {
+        return double_damage_from;
+    }
 
+    public ArrayList<Type> getDouble_damage_to() {
+        return double_damage_to;
+    }
+
+    public ArrayList<Type> getHalf_damage_from() {
+        return half_damage_from;
+    }
+
+    public ArrayList<Type> getHalf_damage_to() {
+        return half_damage_to;
+    }
+
+    public ArrayList<Type> getNo_damage_from() {
+        return no_damage_from;
+    }
+
+    public ArrayList<Type> getNo_damage_to() {
+        return no_damage_to;
+    }
 }

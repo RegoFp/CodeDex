@@ -28,4 +28,11 @@ public class Type  {
         this.url = url;
 
     }
+
+
+    public int getId() {
+        String[] urlSplice = url.split("/");
+        return Integer.parseInt(urlSplice[urlSplice.length -1]);
+    }
+
 }

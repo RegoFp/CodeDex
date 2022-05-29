@@ -69,11 +69,6 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
 
                 abilitiesLists = response.body().getResults();
                 abilitiesAdapter.addMoveItem(abilitiesLists);
-                //RecyclerView
-
-
-
-
 
 
             }
@@ -112,6 +107,8 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
 
 
         client = retrofit.create(PokemonClient.class);
+
+
 
 
     }

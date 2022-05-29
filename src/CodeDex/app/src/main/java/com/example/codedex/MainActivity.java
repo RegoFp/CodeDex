@@ -20,8 +20,8 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Toast;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.codedex.models.PokemonList;
 import com.example.codedex.models.Type;
@@ -44,7 +44,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener, NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     private Retrofit retrofit;
     private String id = "1";
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
             getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
         }
 
+        searchView = (SearchView) findViewById(R.id.searchBar);
+        searchView.setOnQueryTextListener(this);
 
         //RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.pokeList);
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
 
     @Override
     public void onItemClick(int position) {
-        Pokemon pokemon = pokemonList.get(position);
+        Pokemon pokemon = listPokemonAdapter.getCurrentList().get(position);
         Pokemon(""+pokemon.getId());
 
     }
@@ -252,6 +254,17 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         //close navigation drawer
         return true;
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        listPokemonAdapter.filtderData(newText);
+        return false;
     }
 }
 

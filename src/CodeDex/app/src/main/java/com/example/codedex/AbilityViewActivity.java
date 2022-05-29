@@ -7,18 +7,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.AbilityPokemonList;
 import com.example.codedex.models.Effect_entries;
 import com.example.codedex.models.FlavorText;
+import com.example.codedex.models.PokemonData;
+import com.example.codedex.models.Type;
+import com.example.codedex.models.TypesList;
+import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AbilityViewActivity extends AppCompatActivity implements AbilityListPokemonAdapter.onItemListener {
 
@@ -118,6 +133,59 @@ public class AbilityViewActivity extends AppCompatActivity implements AbilityLis
 
     @Override
     public void onItemClick(int position) {
+        String API_BASE_URL = "https://pokeapi.co/api/v2/";
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        Retrofit.Builder builder =
+                new Retrofit.Builder()
+                        .baseUrl(API_BASE_URL)
+                        .addConverterFactory(
+                                GsonConverterFactory.create()
+                        );
+
+        Retrofit retrofit =
+                builder
+                        .client(
+                                httpClient.build()
+                        )
+                        .build();
+
+        Intent i = new Intent(this, PokemonView.class);
+        PokemonClient client =  retrofit.create(PokemonClient.class);
+        Call<PokemonData> call = client.getPokemonById(String.valueOf(abilityListPokemonAdapter.getList().get(position).getPokemon().getId()));
+        call.enqueue(new Callback<PokemonData>() {
+            @Override
+            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
+                PokemonData pokemonData = response.body();
+                Parcelable wrapped = Parcels.wrap(pokemonData);
+                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
+
+
+                List<TypesList> typesList = pokemonData.getTypes();
+                Type type = typesList.get(0).getType();
+
+
+
+                i.putExtra("pokemon", wrapped);
+
+                startActivity(i);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<PokemonData> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 }

@@ -16,19 +16,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.codedex.models.AbilityData;
 import com.example.codedex.models.ChainLink;
 import com.example.codedex.models.EvolutionRoot;
 import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.MoveList;
+import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.SpecieData;
+import com.example.codedex.models.Type;
+import com.example.codedex.models.TypesList;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -39,7 +44,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class PokeViewFragment extends Fragment {
+public class PokeViewFragment extends Fragment   {
 
     PokemonData pokemonData;
     Retrofit retrofit;
@@ -172,10 +177,12 @@ public class PokeViewFragment extends Fragment {
         }
 
         TextView height = root.findViewById(R.id.detailHeight);
-        height.setText(pokemonData.getHeight());
+        Double heightm = Double.valueOf(pokemonData.getHeight())/10;
+        height.setText(heightm + " m");
 
         TextView weight = root.findViewById(R.id.detailWeight);
-        weight.setText(pokemonData.getWeight());
+        Double weightKg = Double.valueOf(pokemonData.getWeight())/10;
+        weight.setText(weightKg+ " Kg");
 
 
         progressBar = (ProgressBar) root.findViewById(R.id.evolutionLoading);
@@ -202,7 +209,12 @@ public class PokeViewFragment extends Fragment {
                 recyclerView = (RecyclerView) root.findViewById(R.id.evolutionRecycler);
 
                 Boolean test = false;
-                evolutionChainRootAdapter= new EvolutionChainRootAdapter(root.getContext(),null);
+                evolutionChainRootAdapter= new EvolutionChainRootAdapter(root.getContext(),EvolutionChainRootAdapter.onItemListener = new EvolutionChainRootAdapter.onItemListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        //getPokemon(evolutionChainRootAdapter.getCurrentList().get(position).getSpecies().getName());
+                    }
+                });
                 recyclerView.setAdapter(evolutionChainRootAdapter);
                 recyclerView.setHasFixedSize(true);
 
@@ -248,5 +260,40 @@ public class PokeViewFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void getPokemon(String id){
+        Intent i = new Intent(root.getContext(), PokemonView.class);
+        PokemonClient client =  retrofit.create(PokemonClient.class);
+        Call<PokemonData> call = client.getPokemonById(id);
+        call.enqueue(new Callback<PokemonData>() {
+            @Override
+            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
+                PokemonData pokemonData = response.body();
+                Parcelable wrapped = Parcels.wrap(pokemonData);
+                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
+
+
+                List<TypesList> typesList = pokemonData.getTypes();
+                Type type = typesList.get(0).getType();
+
+
+
+                i.putExtra("pokemon", wrapped);
+
+                startActivity(i);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<PokemonData> call, Throwable t) {
+                Toast.makeText(root.getContext(),"ERROR", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

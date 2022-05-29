@@ -9,30 +9,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.ViewGroup;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.codedex.models.Effect_entries;
-import com.example.codedex.models.FlavorText;
-import com.example.codedex.models.MoveData;
-import com.example.codedex.models.Pokemon;
-import com.example.codedex.models.PokemonData;
-import com.example.codedex.models.Type;
-import com.example.codedex.models.TypesList;
+import com.example.codedex.models.TypeData;
 import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,135 +33,117 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MoveViewActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener{
+public class TypeViewActivity extends AppCompatActivity implements ListTypeRelationsAdapter.onItemListener{
 
-    private MoveData moveData;
+    TypeData typeData;
+    Retrofit retrofit;
+    RecyclerView recyclerViewDoubleTo;
+    RecyclerView recyclerViewHalfTo;
+    RecyclerView recyclerViewDoubleFrom;
+    RecyclerView recyclerViewHalfFrom;
+    RecyclerView recyclerViewNodamageTo;
+    RecyclerView recyclerViewNodamageFrom;
 
-    private RecyclerView recyclerView;
-    private ListPokemonAdapter listPokemonAdapter;
+    ListTypeRelationsAdapter listTypeRelationsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_move_view);
+        setContentView(R.layout.activity_type_view);
 
         getSupportActionBar().hide();
 
-
         Intent intent = getIntent();
-        moveData = Parcels.unwrap(getIntent().getParcelableExtra("move"));
-
-        TextView textView1 = findViewById(R.id.moveDataName);
-        textView1.setText(moveData.getName().toUpperCase().replace("-"," "));
-
-        TextView textView2 = findViewById(R.id.moveDataAccuracy);
-        textView2.setText(""+moveData.getAccuracy());
-
-        TextView textView3 = findViewById(R.id.moveDataPP);
-        textView3.setText(""+moveData.getPp());
-
-        TextView textView4 = findViewById(R.id.moveDataPower);
-        textView4.setText(""+moveData.getPower());
-
-
-        ImageView imageView1 = findViewById(R.id.moveDataDamageType);
-        String type = moveData.getType().getName();
-        String uri = "@drawable/type_"+type;  // where myresource (without the extension) is the file
-        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-        Drawable res = getResources().getDrawable(imageResource);
-        imageView1.setImageDrawable(res);
-
-
-        ImageView imageView2 = findViewById(R.id.moveDataDamageClass);
-        String dmg = moveData.getDamage_class().getName();
-        String uri2 = "@drawable/dmg_"+dmg;  // where myresource (without the extension) is the file
-        int imageResource2 = getResources().getIdentifier(uri2, null, getPackageName());
-        Drawable res2 = getResources().getDrawable(imageResource2);
-        imageView2.setImageDrawable(res2);
+        typeData = Parcels.unwrap(getIntent().getParcelableExtra("type"));
 
         SetColor();
 
-        TextView textView5 = findViewById(R.id.moveDataDescription);
-        for (final FlavorText flavorText: moveData.getFlavor_text_entries()){
-            if(flavorText.getLanguage().getName().equalsIgnoreCase("en")){
-                textView5.setText(flavorText.getFlavor_text().replaceAll("\\\n"," "));
-                break;
-            }
+
+        String typeName = typeData.getName();
+        ImageView imageview = (ImageView) findViewById(R.id.parentType);
+        String uri = "@drawable/type_"+typeName;  // where myresource (without the extension) is the file
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        imageview.setImageDrawable(res);
+
+        //DoubleTo
+        recyclerViewDoubleTo = (RecyclerView) findViewById(R.id.TypeDoubleTo);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewDoubleTo.setAdapter(listTypeRelationsAdapter);
+        recyclerViewDoubleTo.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewDoubleTo.setLayoutManager(layoutManager);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getDouble_damage_to());
+
+
+        //HalfTo
+        recyclerViewHalfTo = (RecyclerView) findViewById(R.id.TypeHalfTo);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewHalfTo.setAdapter(listTypeRelationsAdapter);
+        recyclerViewHalfTo.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerHalfTo = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewHalfTo.setLayoutManager(layoutManagerHalfTo);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getHalf_damage_to());
+
+        //DoubleFrom
+        recyclerViewDoubleFrom = (RecyclerView) findViewById(R.id.TypeDoubleFrom);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewDoubleFrom.setAdapter(listTypeRelationsAdapter);
+        recyclerViewDoubleFrom.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerDoubleFrom = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewDoubleFrom.setLayoutManager(layoutManagerDoubleFrom);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getDouble_damage_from());
+
+        //HalfFrom
+        recyclerViewHalfFrom = (RecyclerView) findViewById(R.id.TypeHalfFrom);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewHalfFrom.setAdapter(listTypeRelationsAdapter);
+        recyclerViewHalfFrom.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerHalfFrom = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewHalfFrom.setLayoutManager(layoutManagerHalfFrom);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getHalf_damage_from());
+
+        //NoTo
+        recyclerViewNodamageTo = (RecyclerView) findViewById(R.id.TypeNoTo);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewNodamageTo.setAdapter(listTypeRelationsAdapter);
+        recyclerViewNodamageTo.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerNoTo = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewNodamageTo.setLayoutManager(layoutManagerNoTo);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getNo_damage_to());
+
+        if(typeData.getDamage_relations().getNo_damage_to().size() > 0){
+            TextView textView1 = (TextView) findViewById(R.id.noTypes1);
+            textView1.setVisibility(View.GONE);
 
         }
 
+        //NoFrom
+        recyclerViewNodamageFrom = (RecyclerView) findViewById(R.id.TypeNoFrom);
+        listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
+        recyclerViewNodamageFrom.setAdapter(listTypeRelationsAdapter);
+        recyclerViewNodamageFrom.setHasFixedSize(true);
+        LinearLayoutManager layoutManagerNoFrom = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewNodamageFrom.setLayoutManager(layoutManagerNoFrom);
+        listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getNo_damage_from());
 
-        TextView textView8 = findViewById(R.id.moveDataEffect);
-        String effect = moveData.getEffect_entries().get(0).getEffect();
-        textView8.setText(effect.replace("$effect_chance", ""+moveData.getEffect_chance()));
-
-
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
-        //Checks how many lines the effects has, and if it's less than 5 sets it's height as wrap content
-        textView8.post(new Runnable() {
-            @Override
-            public void run() {
-                int lineCount = textView8.getLineCount();
-                if(lineCount<5){
-                    ViewGroup.LayoutParams params = scrollView.getLayoutParams();
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    scrollView.setLayoutParams(params);
-
-                }
-
-            }
-        });
-
-
-
-
-
-
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.moveDataPokemon);
-
-
-        listPokemonAdapter = new ListPokemonAdapter(this,this);
-        recyclerView.setAdapter(listPokemonAdapter);
-        recyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        ArrayList<Pokemon> pokemons = moveData.getLearned_by_pokemon();
-
-
-        //Remoces alternative forms from the list
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            pokemons.removeIf(t -> t.getId()>300);
-        }else{
-
-            for(int i = 0; i < pokemons.size(); i++){
-                if(pokemons.get(i).getId() > 3000){
-                    pokemons.remove(i);
-                    i--;
-                }
-            }
-
+        if(typeData.getDamage_relations().getNo_damage_from().size() > 0){
+            TextView textView2 = (TextView) findViewById(R.id.noTypes2);
+            textView2.setVisibility(View.GONE);
 
         }
-
-
-        listPokemonAdapter.addPokemonItem(pokemons);
-
-
-
 
 
     }
 
     private void SetColor() {
-        CardView cardView = (CardView) findViewById(R.id.moveDataCardview);
-        CardView cardView2 = (CardView) findViewById(R.id.moveDataTopCard);
-        CardView cardView3 = (CardView) findViewById(R.id.moveDataDescriptionCard);
-        CardView cardView4 = (CardView) findViewById(R.id.scrollcard);
-        String type = moveData.getType().getName();
+        CardView cardView = (CardView) findViewById(R.id.cardViewType1);
+        CardView cardView2 = (CardView) findViewById(R.id.cardViewType2);
+        CardView cardView3 = (CardView) findViewById(R.id.cardViewType3);
+        CardView cardView4 = (CardView) findViewById(R.id.cardViewType4);
+        CardView cardView5 = (CardView) findViewById(R.id.cardViewType5);
+        CardView cardView6 = (CardView) findViewById(R.id.cardViewType6);
+        String type = typeData.getName();
 
         switch (type){
             case "bug":
@@ -299,6 +272,9 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         int  green = Color.green(color);
         int  blue = Color.blue(color);
 
+        cardView5.setCardBackgroundColor(color);
+        cardView6.setCardBackgroundColor(color);
+
         //Crea un color en base al rbg añadiendole alpha
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             color = Color.argb(150,red,green,blue);
@@ -306,8 +282,8 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
 
 
-        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.moveDataBackground);
-        constraintLayout.setBackgroundColor(color);
+        ScrollView linearLayout= (ScrollView) findViewById(R.id.TypeBackground);
+        linearLayout.setBackgroundColor(color);
 
 
         Window window = this.getWindow();
@@ -325,66 +301,12 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
     }
 
-
     @Override
     public void onItemClick(int position) {
 
-        getPokemon(String.valueOf(listPokemonAdapter.getCurrentList().get(position).getId()));
     }
 
-    private void getPokemon(String id){
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl("https://pokeapi.co/api/v2/")
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        Retrofit retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-        Intent i = new Intent(this, PokemonView.class);
-        PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<PokemonData> call = client.getPokemonById(id);
-        call.enqueue(new Callback<PokemonData>() {
-            @Override
-            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
-                PokemonData pokemonData = response.body();
-                Parcelable wrapped = Parcels.wrap(pokemonData);
-                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
 
 
-                List<TypesList> typesList = pokemonData.getTypes();
-                Type type = typesList.get(0).getType();
-
-
-
-                i.putExtra("pokemon", wrapped);
-
-                startActivity(i);
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<PokemonData> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
 
 }

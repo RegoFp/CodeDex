@@ -11,6 +11,7 @@ import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.PokemonList;
 import com.example.codedex.models.SpecieData;
+import com.example.codedex.models.TypeData;
 
 import java.util.List;
 
@@ -22,9 +23,7 @@ public interface PokemonClient {
 
     //Lista de todos los pokemons
     @GET("pokemon?limit=10000&offset=0")
-    Call<PokemonList> pokemons(
-
-    );
+    Call<PokemonList> pokemons();
 
     //Pokemon por su nº en la pokedex
     @GET("pokemon/{id}")
@@ -36,14 +35,10 @@ public interface PokemonClient {
     Call<SpecieData> getSpecieById(@Path("id") Integer id);
 
     @GET("move?limit=100000&offset=0")
-    Call<AllMovesList> Allmoves(
-
-    );
+    Call<AllMovesList> Allmoves();
 
     @GET("ability?limit=100000&offset=0")
-    Call<AllAbilities> AllAbilities(
-
-    );
+    Call<AllAbilities> AllAbilities();
 
 
     //Pokemon por su nº en la pokedex
@@ -58,4 +53,7 @@ public interface PokemonClient {
     @GET("move/{name}")
     Call<MoveData> getMoveData(@Path("name") String name);
 
+
+    @GET("type/{id}")
+    Call<TypeData> getType(@Path("id") String id);
 }
