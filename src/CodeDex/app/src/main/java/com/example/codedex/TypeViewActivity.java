@@ -5,7 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -21,12 +21,10 @@ import com.example.codedex.models.TypeData;
 
 import org.parceler.Parcels;
 
-import retrofit2.Retrofit;
 
 public class TypeViewActivity extends AppCompatActivity implements ListTypeRelationsAdapter.onItemListener{
 
     TypeData typeData;
-    Retrofit retrofit;
     RecyclerView recyclerViewDoubleTo;
     RecyclerView recyclerViewHalfTo;
     RecyclerView recyclerViewDoubleFrom;
@@ -43,7 +41,6 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
 
         getSupportActionBar().hide();
 
-        Intent intent = getIntent();
         typeData = Parcels.unwrap(getIntent().getParcelableExtra("type"));
 
         SetColor();
@@ -57,7 +54,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         imageview.setImageDrawable(res);
 
         //DoubleTo
-        recyclerViewDoubleTo = (RecyclerView) findViewById(R.id.TypeDoubleTo);
+        recyclerViewDoubleTo = findViewById(R.id.TypeDoubleTo);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewDoubleTo.setAdapter(listTypeRelationsAdapter);
         recyclerViewDoubleTo.setHasFixedSize(true);
@@ -67,7 +64,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
 
 
         //HalfTo
-        recyclerViewHalfTo = (RecyclerView) findViewById(R.id.TypeHalfTo);
+        recyclerViewHalfTo = findViewById(R.id.TypeHalfTo);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewHalfTo.setAdapter(listTypeRelationsAdapter);
         recyclerViewHalfTo.setHasFixedSize(true);
@@ -76,7 +73,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getHalf_damage_to());
 
         //DoubleFrom
-        recyclerViewDoubleFrom = (RecyclerView) findViewById(R.id.TypeDoubleFrom);
+        recyclerViewDoubleFrom =  findViewById(R.id.TypeDoubleFrom);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewDoubleFrom.setAdapter(listTypeRelationsAdapter);
         recyclerViewDoubleFrom.setHasFixedSize(true);
@@ -85,7 +82,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getDouble_damage_from());
 
         //HalfFrom
-        recyclerViewHalfFrom = (RecyclerView) findViewById(R.id.TypeHalfFrom);
+        recyclerViewHalfFrom = findViewById(R.id.TypeHalfFrom);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewHalfFrom.setAdapter(listTypeRelationsAdapter);
         recyclerViewHalfFrom.setHasFixedSize(true);
@@ -94,7 +91,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getHalf_damage_from());
 
         //NoTo
-        recyclerViewNodamageTo = (RecyclerView) findViewById(R.id.TypeNoTo);
+        recyclerViewNodamageTo =  findViewById(R.id.TypeNoTo);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewNodamageTo.setAdapter(listTypeRelationsAdapter);
         recyclerViewNodamageTo.setHasFixedSize(true);
@@ -103,13 +100,13 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getNo_damage_to());
 
         if(typeData.getDamage_relations().getNo_damage_to().size() > 0){
-            TextView textView1 = (TextView) findViewById(R.id.noTypes1);
+            TextView textView1 =  findViewById(R.id.noTypes1);
             textView1.setVisibility(View.GONE);
 
         }
 
         //NoFrom
-        recyclerViewNodamageFrom = (RecyclerView) findViewById(R.id.TypeNoFrom);
+        recyclerViewNodamageFrom = findViewById(R.id.TypeNoFrom);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
         recyclerViewNodamageFrom.setAdapter(listTypeRelationsAdapter);
         recyclerViewNodamageFrom.setHasFixedSize(true);
@@ -118,7 +115,7 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getNo_damage_from());
 
         if(typeData.getDamage_relations().getNo_damage_from().size() > 0){
-            TextView textView2 = (TextView) findViewById(R.id.noTypes2);
+            TextView textView2 =  findViewById(R.id.noTypes2);
             textView2.setVisibility(View.GONE);
 
         }
@@ -127,12 +124,12 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
     }
 
     private void SetColor() {
-        CardView cardView = (CardView) findViewById(R.id.cardViewType1);
-        CardView cardView2 = (CardView) findViewById(R.id.cardViewType2);
-        CardView cardView3 = (CardView) findViewById(R.id.cardViewType3);
-        CardView cardView4 = (CardView) findViewById(R.id.cardViewType4);
-        CardView cardView5 = (CardView) findViewById(R.id.cardViewType5);
-        CardView cardView6 = (CardView) findViewById(R.id.cardViewType6);
+        CardView cardView =  findViewById(R.id.cardViewType1);
+        CardView cardView2 =  findViewById(R.id.cardViewType2);
+        CardView cardView3 =  findViewById(R.id.cardViewType3);
+        CardView cardView4 =  findViewById(R.id.cardViewType4);
+        CardView cardView5 =  findViewById(R.id.cardViewType5);
+        CardView cardView6 =  findViewById(R.id.cardViewType6);
         String type = typeData.getName();
 
         switch (type){

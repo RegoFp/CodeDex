@@ -1,6 +1,5 @@
 package com.example.codedex;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,53 +10,35 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
+
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TableLayout;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.models.MoveList;
 import com.example.codedex.models.PokemonData;
-import com.example.codedex.models.SpecieData;
-import com.example.codedex.models.Type;
-import com.example.codedex.models.TypeData;
-import com.example.codedex.models.TypesList;
-import com.example.codedex.pokeapi.PokemonClient;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.parceler.Parcels;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PokemonView extends AppCompatActivity {
 
     private PokemonData pokemonData;
-    private Retrofit retrofit;
-    private SpecieData specieData;
 
 
     @Override
@@ -66,7 +47,6 @@ public class PokemonView extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_view);
 
         //Get object
-        Intent intent = getIntent();
         pokemonData = Parcels.unwrap(getIntent().getParcelableExtra("pokemon"));
 
         RetrofitInstance retrofitInstance = new RetrofitInstance();

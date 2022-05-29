@@ -30,11 +30,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitInstance {
 
 
-    //TODO return objects, not start avticity here
     public Retrofit retrofit;
 
+    /**
+     * Starts an instance of Retrofit to be used in the methods in this same class
+     */
     public void startRetrofit() {
-        //Iniciar Retrofit
         String API_BASE_URL = "https://pokeapi.co/api/v2/";
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -60,7 +61,11 @@ public class RetrofitInstance {
 
     }
 
-
+    /**
+     * Requests a TypeData object and starts TypeViewActivity
+     * @param context   the context from the activity this method is called from
+     * @param id the id assigned to the type in the API
+     */
     public void getType(Context context, String id){
         Intent i = new Intent(context, TypeViewActivity.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -86,6 +91,10 @@ public class RetrofitInstance {
 
     }
 
+    /**
+     * Requests a TypeResults object and starts AllTypesViewActivity
+     * @param context  the context from the activity this method is called from
+     */
     public void getAllType(Context context){
         Intent i = new Intent(context, AllTypesViewActivity.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -106,6 +115,10 @@ public class RetrofitInstance {
         });
     }
 
+    /**
+     * Requests a TypeResults object and starts AllNaturesActivity
+     * @param context  the context from the activity this method is called from
+     */
     public void getAllNatures(Context context){
         Intent i = new Intent(context, AllNaturesActivity.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -126,6 +139,11 @@ public class RetrofitInstance {
         });
     }
 
+    /**
+     * Requests a PokemonData object and starts PokemonView
+     * @param context the context from the activity this method is called from
+     * @param id the id assigned to the Pokemon in the API
+     */
     public void getPokemon(Context context, String id){
         Intent i = new Intent(context, PokemonView.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
@@ -157,6 +175,11 @@ public class RetrofitInstance {
 
     }
 
+    /**
+     * Requests a AbilityData object and starts AbilityViewActivity
+     * @param context the context from the activity this method is called from
+     * @param name the name assigned to the ability in the API
+     */
     public void getAbility(Context context, String name) {
 
         Intent i = new Intent(context, AbilityViewActivity.class);
@@ -183,6 +206,11 @@ public class RetrofitInstance {
         });
     }
 
+    /**
+     * Requests a MoveData object and starts MoveViewActivity
+     * @param context the context from the activity this method is called from
+     * @param name the name assigned to the move in the API
+     */
     public void getMove(Context context, String name) {
 
         Intent i = new Intent(context, MoveViewActivity.class);

@@ -6,72 +6,78 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
+
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.codedex.adapters.ListPokemonAdapter;
 import com.example.codedex.models.FlavorText;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.models.Pokemon;
-import com.example.codedex.models.PokemonData;
-import com.example.codedex.models.Type;
-import com.example.codedex.models.TypesList;
-import com.example.codedex.pokeapi.PokemonClient;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoveViewActivity extends AppCompatActivity implements ListPokemonAdapter.onItemListener{
 
     private MoveData moveData;
 
-    private RecyclerView recyclerView;
     private ListPokemonAdapter listPokemonAdapter;
+    RetrofitInstance retrofitInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move_view);
 
-        getSupportActionBar().hide();
+        //Hides ActionBar
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
+        //Start Retrofit
+        retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
 
-        Intent intent = getIntent();
+        //Receive moveData
         moveData = Parcels.unwrap(getIntent().getParcelableExtra("move"));
 
+        //Set texts
         TextView textView1 = findViewById(R.id.moveDataName);
         textView1.setText(moveData.getName().toUpperCase().replace("-"," "));
 
         TextView textView2 = findViewById(R.id.moveDataAccuracy);
-        textView2.setText(""+moveData.getAccuracy());
+        textView2.setText(String.valueOf(moveData.getAccuracy()));
 
         TextView textView3 = findViewById(R.id.moveDataPP);
-        textView3.setText(""+moveData.getPp());
+        textView3.setText(String.valueOf(moveData.getPp()));
 
         TextView textView4 = findViewById(R.id.moveDataPower);
-        textView4.setText(""+moveData.getPower());
+        textView4.setText(String.valueOf(moveData.getPower()));
 
+        TextView textView8 = findViewById(R.id.moveDataEffect);
+        String effect = moveData.getEffect_entries().get(0).getEffect();
+        textView8.setText(effect.replace("$effect_chance", ""+moveData.getEffect_chance()));
 
+        TextView textView5 = findViewById(R.id.moveDataDescription);
+        for (final FlavorText flavorText: moveData.getFlavor_text_entries()){
+            if(flavorText.getLanguage().getName().equalsIgnoreCase("en")){
+                textView5.setText(flavorText.getFlavor_text().replaceAll("\n"," "));
+                break;
+            }
+
+        }
+
+        //Set type image
         ImageView imageView1 = findViewById(R.id.moveDataDamageType);
         String type = moveData.getType().getName();
         String uri = "@drawable/type_"+type;  // where myresource (without the extension) is the file
@@ -79,7 +85,7 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         Drawable res = getResources().getDrawable(imageResource);
         imageView1.setImageDrawable(res);
 
-
+        //Set class image
         ImageView imageView2 = findViewById(R.id.moveDataDamageClass);
         String dmg = moveData.getDamage_class().getName();
         String uri2 = "@drawable/dmg_"+dmg;  // where myresource (without the extension) is the file
@@ -87,24 +93,12 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         Drawable res2 = getResources().getDrawable(imageResource2);
         imageView2.setImageDrawable(res2);
 
+
+
         SetColor();
 
-        TextView textView5 = findViewById(R.id.moveDataDescription);
-        for (final FlavorText flavorText: moveData.getFlavor_text_entries()){
-            if(flavorText.getLanguage().getName().equalsIgnoreCase("en")){
-                textView5.setText(flavorText.getFlavor_text().replaceAll("\\\n"," "));
-                break;
-            }
-
-        }
-
-
-        TextView textView8 = findViewById(R.id.moveDataEffect);
-        String effect = moveData.getEffect_entries().get(0).getEffect();
-        textView8.setText(effect.replace("$effect_chance", ""+moveData.getEffect_chance()));
-
-
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
+        //Set Up ScrollView
+        ScrollView scrollView = findViewById(R.id.scroll);
         //Checks how many lines the effects has, and if it's less than 5 sets it's height as wrap content
         textView8.post(new Runnable() {
             @Override
@@ -121,14 +115,8 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         });
 
 
-
-
-
-
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.moveDataPokemon);
-
+        //Set Up RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.moveDataPokemon);
 
         listPokemonAdapter = new ListPokemonAdapter(this,this);
         recyclerView.setAdapter(listPokemonAdapter);
@@ -140,7 +128,7 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
         ArrayList<Pokemon> pokemons = moveData.getLearned_by_pokemon();
 
 
-        //Remoces alternative forms from the list
+        //Removces alternative forms from the list
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             pokemons.removeIf(t -> t.getId()>300);
         }else{
@@ -165,10 +153,10 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
     }
 
     private void SetColor() {
-        CardView cardView = (CardView) findViewById(R.id.moveDataCardview);
-        CardView cardView2 = (CardView) findViewById(R.id.moveDataTopCard);
-        CardView cardView3 = (CardView) findViewById(R.id.moveDataDescriptionCard);
-        CardView cardView4 = (CardView) findViewById(R.id.scrollcard);
+        CardView cardView =  findViewById(R.id.moveDataCardview);
+        CardView cardView2 = findViewById(R.id.moveDataTopCard);
+        CardView cardView3 = findViewById(R.id.moveDataDescriptionCard);
+        CardView cardView4 = findViewById(R.id.scrollcard);
         String type = moveData.getType().getName();
 
         switch (type){
@@ -305,7 +293,7 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
 
 
-        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.moveDataBackground);
+        ConstraintLayout constraintLayout = findViewById(R.id.moveDataBackground);
         constraintLayout.setBackgroundColor(color);
 
 
@@ -327,63 +315,9 @@ public class MoveViewActivity extends AppCompatActivity implements ListPokemonAd
 
     @Override
     public void onItemClick(int position) {
-
-        getPokemon(String.valueOf(listPokemonAdapter.getCurrentList().get(position).getId()));
+        retrofitInstance.getPokemon(getApplicationContext(),String.valueOf(listPokemonAdapter.getCurrentList().get(position).getId()));
     }
 
-    private void getPokemon(String id){
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl("https://pokeapi.co/api/v2/")
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        Retrofit retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-        Intent i = new Intent(this, PokemonView.class);
-        PokemonClient client =  retrofit.create(PokemonClient.class);
-        Call<PokemonData> call = client.getPokemonById(id);
-        call.enqueue(new Callback<PokemonData>() {
-            @Override
-            public void onResponse(Call<PokemonData> call, Response<PokemonData> response) {
-                PokemonData pokemonData = response.body();
-                Parcelable wrapped = Parcels.wrap(pokemonData);
-                PokemonData pokemonDataWrapped = Parcels.unwrap(wrapped);
-
-
-                List<TypesList> typesList = pokemonData.getTypes();
-                Type type = typesList.get(0).getType();
-
-
-
-                i.putExtra("pokemon", wrapped);
-
-                startActivity(i);
-
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<PokemonData> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
 
 }
