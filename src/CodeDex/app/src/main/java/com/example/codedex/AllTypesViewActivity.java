@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 
 import com.example.codedex.adapters.AllTypesAdapter;
 import com.example.codedex.models.Type;
@@ -15,6 +16,7 @@ import com.example.codedex.models.TypeResults;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AllTypesViewActivity extends AppCompatActivity {
 
@@ -27,6 +29,15 @@ public class AllTypesViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_types_view);
+
+
+        //Hide topbar and change color of statusBar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        Window window = this.getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+
+        //Change color of botton NavigationBar
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
 
         //Receives the list of types
         Intent intent = getIntent();

@@ -3,11 +3,13 @@ package com.example.codedex;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 
 
 import com.example.codedex.adapters.AbilitiesAdapter;
@@ -19,6 +21,7 @@ import com.example.codedex.pokeapi.PokemonClient;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 import retrofit2.Call;
@@ -40,6 +43,15 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_abilities_view);
 
+
+        //Hide topbar and change color of statusBar
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        Window window = this.getWindow();
+        window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+
+        //Change color of botton NavigationBar
+        getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));
+
         //Sets up SearchView
         SearchView searchView = findViewById(R.id.AllAbilitiesSearch);
         searchView.setOnQueryTextListener(this);
@@ -59,8 +71,8 @@ public class AllAbilitiesViewActivity extends AppCompatActivity implements Abili
         recyclerView.setAdapter(abilitiesAdapter);
         recyclerView.setHasFixedSize(true);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         //Shows all Abilities
         getAllAbilities();

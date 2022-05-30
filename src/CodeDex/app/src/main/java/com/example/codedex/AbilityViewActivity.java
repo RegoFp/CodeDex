@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -38,6 +40,14 @@ public class AbilityViewActivity extends AppCompatActivity implements AbilityLis
 
         //Hide actionBar
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        Window window = this.getWindow();
+        window.setStatusBarColor(Color.parseColor("#AAFF6363"));
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setNavigationBarColor(Color.parseColor("#AAFF6363"));
+        }
+
 
         //Receive abilityData
         abilityData= Parcels.unwrap(getIntent().getParcelableExtra("ability"));

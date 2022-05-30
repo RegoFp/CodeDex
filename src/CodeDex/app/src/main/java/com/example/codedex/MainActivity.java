@@ -1,6 +1,7 @@
 package com.example.codedex;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -8,9 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
+
 import androidx.appcompat.widget.SearchView;
 
 import com.example.codedex.adapters.ListPokemonAdapter;
@@ -56,8 +61,10 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
         NavigationView navigationView = findViewById(R.id.mainMenu);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Window window = this.getWindow();
-        //window.setStatusBarColor(getResources().getColor(R.color.pokeRed));
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.black)));
+
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.pokeRed));

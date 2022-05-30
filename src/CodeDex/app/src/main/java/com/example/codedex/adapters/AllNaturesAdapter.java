@@ -86,8 +86,13 @@ public class AllNaturesAdapter extends RecyclerView.Adapter<AllNaturesAdapter.Vi
 
                 NatureData natureData = response.body();
                 if(natureData.getIncreased_stat()!=null){
-                    holder.natureStrong.setText(natureData.getIncreased_stat().getName());
-                    holder.natureWeak.setText(natureData.getDecreased_stat().getName());
+                    String strong = natureData.getIncreased_stat().getName();
+                    strong = strong.substring(0, 1).toUpperCase() + strong.substring(1);
+                    holder.natureStrong.setText(strong.replace("-"," "));
+
+                    String weak = natureData.getDecreased_stat().getName();
+                    weak = weak.substring(0, 1).toUpperCase() + weak.substring(1);
+                    holder.natureWeak.setText(weak.replace("-" , " "));
                 }else{
                     holder.linearLayout.setVisibility(View.GONE);
 
