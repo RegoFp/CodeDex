@@ -118,9 +118,7 @@ public class PokemonView extends AppCompatActivity {
         //sprites
         //Glide.with(this).load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemonData.getId()+".png").into(imageView);
 
-
-
-
+        
 
         //Configure screens
         ViewPager2 viewPager2 = (ViewPager2) findViewById(R.id.viewpagerPokeView);

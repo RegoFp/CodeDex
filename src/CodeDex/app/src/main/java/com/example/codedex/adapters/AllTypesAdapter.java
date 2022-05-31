@@ -17,7 +17,6 @@ import com.example.codedex.models.Type;
 
 import java.util.ArrayList;
 
-import retrofit2.Retrofit;
 
 public class AllTypesAdapter extends RecyclerView.Adapter<AllTypesAdapter.ViewHolder>{
 
@@ -25,9 +24,8 @@ public class AllTypesAdapter extends RecyclerView.Adapter<AllTypesAdapter.ViewHo
     private Context context;
     private onItemListener mOnItemListener;
     private Animation animation;
-    private Retrofit retrofit;
 
-    //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
+
 
 
     public AllTypesAdapter(Context context, onItemListener onItemListener){
@@ -95,7 +93,6 @@ public class AllTypesAdapter extends RecyclerView.Adapter<AllTypesAdapter.ViewHo
         public void onClick(View v) {
             onItemListener. onItemClick(getAdapterPosition());
 
-            //TODO No reconoce bien cual esta siendo clicado
         }
     }
 

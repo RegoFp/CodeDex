@@ -23,6 +23,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.codedex.PokemonView;
 import com.example.codedex.R;
+import com.example.codedex.RetrofitInstance;
 import com.example.codedex.models.ChainLink;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.models.Type;
@@ -34,13 +35,11 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionChainRootAdapter.ViewHolder>{
 
@@ -65,7 +64,10 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_evolution_chain,parent,false);
-        startRetrofit();
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+        retrofit = retrofitInstance.retrofit;
+
         return new ViewHolder(view, onItemListener);
     }
 
@@ -265,34 +267,7 @@ public class EvolutionChainRootAdapter extends RecyclerView.Adapter<EvolutionCha
     }
 
 
-    private void startRetrofit(){
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-
-
-    }
 
 }
 

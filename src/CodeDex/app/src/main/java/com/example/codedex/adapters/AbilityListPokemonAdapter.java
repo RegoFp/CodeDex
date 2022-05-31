@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.R;
+import com.example.codedex.RetrofitInstance;
 import com.example.codedex.models.AbilityPokemonList;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
@@ -38,7 +39,6 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
     private Animation animation;
     private Retrofit retrofit;
 
-    //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
 
     public AbilityListPokemonAdapter(Context context, onItemListener onItemListener){
@@ -52,7 +52,11 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.bounce);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pokemon,parent,false);
-        startRetrofit();
+
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+        retrofit = retrofitInstance.retrofit;
+
         return new ViewHolder(view, mOnItemListener);
     }
 
@@ -73,8 +77,6 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
 
 
 
-
-
         Animation slide = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide);
         holder.itemView.startAnimation(slide);
 
@@ -82,6 +84,7 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
         Glide.with(context)
                 .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.getId()+".png")
                 .into(holder.pokefoto);
+
 
 
 
@@ -174,33 +177,6 @@ public class AbilityListPokemonAdapter extends RecyclerView.Adapter<AbilityListP
 
     }
 
-
-    private void startRetrofit() {
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-    }
 
 
 

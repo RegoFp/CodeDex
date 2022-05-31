@@ -27,7 +27,6 @@ public class ListTypeRelationsAdapter extends RecyclerView.Adapter<ListTypeRelat
     private Animation animation;
     private Retrofit retrofit;
 
-    //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
 
     public ListTypeRelationsAdapter(Context context, onItemListener onItemListener){
@@ -95,7 +94,7 @@ public class ListTypeRelationsAdapter extends RecyclerView.Adapter<ListTypeRelat
         public void onClick(View v) {
             onItemListener. onItemClick(getAdapterPosition());
 
-            //TODO No reconoce bien cual esta siendo clicado
+
         }
     }
 

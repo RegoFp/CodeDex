@@ -62,7 +62,8 @@ public class AllNaturesAdapter extends RecyclerView.Adapter<AllNaturesAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nature,parent,false);
-
+        retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
         return new ViewHolder(view, onItemListener);
     }
 
@@ -73,8 +74,7 @@ public class AllNaturesAdapter extends RecyclerView.Adapter<AllNaturesAdapter.Vi
         String name = movelist.getName();
         String id = String.valueOf(movelist.getId());
 
-        retrofitInstance = new RetrofitInstance();
-        retrofitInstance.startRetrofit();
+
 
         holder.natureName.setText(name.toUpperCase());
 

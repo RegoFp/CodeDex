@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ListPokemonAdapte
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
-    //TODO https://www.youtube.com/watch?v=HwYENW0RyY4
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

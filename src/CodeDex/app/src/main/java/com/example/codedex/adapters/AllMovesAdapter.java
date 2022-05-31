@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.codedex.R;
+import com.example.codedex.RetrofitInstance;
 import com.example.codedex.models.Move;
 import com.example.codedex.models.MoveData;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -51,7 +52,11 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_item_move,parent,false);
-        startRetrofit();
+
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+        retrofit = retrofitInstance.retrofit;
+
         return new ViewHolder(view, onItemListener);
     }
 
@@ -202,32 +207,6 @@ public class AllMovesAdapter extends RecyclerView.Adapter<AllMovesAdapter.ViewHo
 
     }
 
-    private void startRetrofit() {
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-    }
 
 
 

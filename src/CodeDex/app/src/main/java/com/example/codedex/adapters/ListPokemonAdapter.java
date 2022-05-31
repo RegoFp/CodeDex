@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.codedex.R;
+import com.example.codedex.RetrofitInstance;
 import com.example.codedex.models.Pokemon;
 import com.example.codedex.models.PokemonData;
 import com.example.codedex.pokeapi.PokemonClient;
@@ -23,13 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.ViewHolder>{
 
@@ -39,8 +37,6 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     private onItemListener mOnItemListener;
     private Animation animation;
     private Retrofit retrofit;
-
-    //TODO https://www.youtube.com/watch?v=2I1NkJNBz9M&t=183s
 
 
     public ListPokemonAdapter(Context context, onItemListener onItemListener){
@@ -55,7 +51,9 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         animation = AnimationUtils.loadAnimation(parent.getContext(), R.anim.bounce);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pokemon,parent,false);
-        startRetrofit();
+        RetrofitInstance retrofitInstance = new RetrofitInstance();
+        retrofitInstance.startRetrofit();
+        retrofit = retrofitInstance.retrofit;
         return new ViewHolder(view, mOnItemListener);
     }
 
@@ -201,7 +199,7 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
         public void onClick(View v) {
             onItemListener.onItemClick(getAdapterPosition());
 
-            //TODO No reconoce bien cual esta siendo clicado
+
         }
     }
 
@@ -210,33 +208,6 @@ public class ListPokemonAdapter extends RecyclerView.Adapter<ListPokemonAdapter.
 
     }
 
-
-    private void startRetrofit() {
-        //Iniciar Retrofit
-        String API_BASE_URL = "https://pokeapi.co/api/v2/";
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit.Builder builder =
-                new Retrofit.Builder()
-                        .baseUrl(API_BASE_URL)
-                        .addConverterFactory(
-                                GsonConverterFactory.create()
-                        );
-
-        retrofit =
-                builder
-                        .client(
-                                httpClient.build()
-                        )
-                        .build();
-
-
-    }
 
 
 
