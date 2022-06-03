@@ -34,6 +34,7 @@
             android:exported="false" />
         <activity
             android:name=".PokemonView"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
