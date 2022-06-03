@@ -69,6 +69,7 @@ public class RetrofitInstance {
     public void getType(Context context, String id){
         Intent i = new Intent(context, TypeViewActivity.class);
         PokemonClient client =  retrofit.create(PokemonClient.class);
+
         Call<TypeData> call = client.getType(id);
         call.enqueue(new Callback<TypeData>() {
             @Override
