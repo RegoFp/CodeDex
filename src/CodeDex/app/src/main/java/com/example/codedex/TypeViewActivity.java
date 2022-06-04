@@ -53,6 +53,12 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         Drawable res = getResources().getDrawable(imageResource);
         imageview.setImageDrawable(res);
 
+
+        if(typeData.getDamage_relations().getDouble_damage_to().size() > 0){
+            TextView textView3 =  findViewById(R.id.noTypes3);
+            textView3.setVisibility(View.GONE);
+        }
+
         //DoubleTo
         recyclerViewDoubleTo = findViewById(R.id.TypeDoubleTo);
         listTypeRelationsAdapter = new ListTypeRelationsAdapter(this, this);
@@ -80,6 +86,12 @@ public class TypeViewActivity extends AppCompatActivity implements ListTypeRelat
         LinearLayoutManager layoutManagerDoubleFrom = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recyclerViewDoubleFrom.setLayoutManager(layoutManagerDoubleFrom);
         listTypeRelationsAdapter.addItem(typeData.getDamage_relations().getDouble_damage_from());
+
+
+        if(typeData.getDamage_relations().getHalf_damage_from().size() > 0){
+            TextView textView4 =  findViewById(R.id.noTypes4);
+            textView4.setVisibility(View.GONE);
+        }
 
         //HalfFrom
         recyclerViewHalfFrom = findViewById(R.id.TypeHalfFrom);

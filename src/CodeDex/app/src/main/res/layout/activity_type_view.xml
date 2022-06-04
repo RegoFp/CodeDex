@@ -61,6 +61,15 @@
                 app:cardBackgroundColor="@color/pokeRed"
                 app:cardCornerRadius="10dp">
 
+                <TextView
+                    android:id="@+id/noTypes3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="30dp"
+                    android:text="No types"/>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/TypeDoubleTo"
                     android:layout_width="match_parent"
@@ -188,6 +197,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+                    <TextView
+                        android:id="@+id/noTypes4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="30dp"
+                        android:text="No types"/>
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/TypeHalfFrom"
