@@ -41,3 +41,6 @@ width="200" hspace="10" vspace="10">
 
 ## Permissions
 - Network Access.
+
+## Build
+To buiild this application open src/Codedex in Android Studion and run.
